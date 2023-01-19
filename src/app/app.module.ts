@@ -11,15 +11,15 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonModule } from "@angular/material/button";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LayoutModule } from "./layout/layout.module";
+import { HttpClientModule } from "@angular/common/http";
 
-
-//costume modules
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    LayoutModule,
     BrowserModule,
+    HttpClientModule,
+    LayoutModule,
     AppRoutingModule,
     MatToolbarModule,
     MatSidenavModule,

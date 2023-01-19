@@ -1,5 +1,7 @@
 .star-icon {
-    color: yellow;
+    color:rgb(222, 222, 35);
+    // border-style: solid;
+    // border-color: rgb(131, 125, 125);
   }
 
   .icon{
@@ -9,5 +11,28 @@
     opacity: 0.9;
   }
 
-
+  .demo-table {
+    width: 100%;
+  }
   
+  .mat-column-demo-position {
+    width: 32px;
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+  }
+  
+  .mat-column-demo-name {
+    padding-left: 16px;
+    font-size: 20px;
+  }
+  
+  .mat-column-demo-weight {
+    font-style: italic;
+  }
+  
+  .mat-column-demo-symbol {
+    width: 32px;
+    text-align: center;
+    font-weight: bold;
+  }
