@@ -1,0 +1,20 @@
+
+    <div class="field" [formGroup]="form">
+        <div class="label" [attr.for]="field.key">{{field.label}}</div>
+        
+        <div [ngSwitch]="field.controlType">
+
+            <!-- add here more fields if necessary -->
+
+            <!-- textbox option -->
+            <input (ngModelChange)="onInputChange()"  class="input" *ngSwitchCase="'textbox'" [formControlName]="field.key"
+            [id]="field.key" [type]="field.type">
+            
+               <!-- dropdown option -->
+            <select class="select" [id]="field.key" *ngSwitchCase="'dropdown'" [formControlName]="field.key">
+                <option *ngFor="let opt of field.options" [value]="opt.key">{{opt.value}}</option>
+            </select>
+            
+        </div>
+        
+        <div class="errorMessage" *ngIf="!isValid && !isFirst">{{field.label}} is required</div>

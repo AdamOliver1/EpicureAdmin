@@ -5,6 +5,7 @@ import Restaurant from "src/app/models/Restaurant";
 import { ITableRow } from "../../common/table/tableRow";
 import { Observable } from "rxjs";
 import { RestaurantFormService } from "../../form/services/restaurantForm/restaurant-form.service";
+import { ChefService } from "src/app/services/chefService/chef.service";
 
 export interface IRestaurantRow extends ITableRow {
   chef: string;
@@ -25,9 +26,13 @@ export class RestaurantsComponent implements OnInit {
 
   constructor(
     private restaurantService: RestaurantService,
-    private restaurantFormService: RestaurantFormService
+    private restaurantFormService: RestaurantFormService,
+    private chefService: ChefService
   ) {
-    this.fields$ = this.restaurantFormService.getFields();
+    this.chefService.readAll().subscribe(data => {
+      this.fields$ = this.restaurantFormService.getFields(data);
+
+    })
   }
 
   ngOnInit(): void {
