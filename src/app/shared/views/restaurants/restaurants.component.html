@@ -1,1 +1,4 @@
-<p>restaurants works!</p>
+
+<app-create-button (buttonClick)="onClick()"></app-create-button>
+<app-table [dataSource]="dataSource" [headers]="headers"></app-table>
+<app-form *ngIf="showForm"></app-form>
