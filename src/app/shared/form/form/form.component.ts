@@ -21,6 +21,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 })
 export class FormComponent implements OnInit {
   @Output() close = new EventEmitter();
+  @Output() submit = new EventEmitter<any>();
   @Input() fields: FieldBase<string>[] | null = [];
   form!: FormGroup;
   payLoad = '';
@@ -32,9 +33,10 @@ export class FormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.payLoad = JSON.stringify(this.form.getRawValue());
-    console.log(this.payLoad);
+    this.payLoad = this.form.getRawValue();
+    console.log("onSubmit: ");
     
+    this.submit.emit(this.payLoad);
   }
 
   get fieldsCheckboxes(){return this.fields?.filter((f) => f.controlType === 'checkbox')}

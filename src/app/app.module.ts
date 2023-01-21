@@ -28,10 +28,6 @@ import { HttpClientModule } from "@angular/common/http";
     MatIconModule,
     BrowserAnimationsModule,
   ],
-  providers: [
-    // MatToolbarModule,
-    // MatIconModule,
-  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

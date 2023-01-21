@@ -46,6 +46,7 @@ import { FormsModule } from '@angular/forms';
     ChefsComponent,
     CreateButtonComponent,
     FormComponent,
+    DishesComponent
   ],
   imports: [
     FormsModule,
@@ -75,7 +76,8 @@ import { FormsModule } from '@angular/forms';
     HeaderComponent,
     FooterComponent,
     SideBarComponent,
-    TableComponent
+    TableComponent,
+    DishesComponent
   ],
   providers:[
     DishService,

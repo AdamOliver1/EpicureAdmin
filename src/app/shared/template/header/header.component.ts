@@ -6,9 +6,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  @Output() toggleSidbarForme: EventEmitter<any> = new EventEmitter();
+  @Output() toggleSidebarForme: EventEmitter<any> = new EventEmitter();
   toggleSidebar() {
-    this.toggleSidbarForme.emit();
+    this.toggleSidebarForme.emit();
     setTimeout(() => {
       window.dispatchEvent(
         new Event('resize')

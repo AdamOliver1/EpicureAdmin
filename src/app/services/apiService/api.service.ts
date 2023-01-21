@@ -14,6 +14,9 @@ export abstract class ApiService <T extends IModel> {
      ) {}
   
     public create(item: T): Observable<T> {
+      console.log(`${this.url}/${this.endpoint}`);
+      console.log(item);
+      
       return this.httpClient
         .post<T>(`${this.url}/${this.endpoint}`,item);    
     }
@@ -33,16 +36,8 @@ export abstract class ApiService <T extends IModel> {
      
     }
     
-  
-    // list(queryOptions: QueryOptions): Observable<T[]> {
-    //   return this.httpClient
-    //     .get(`${this.url}/${this.endpoint}?${queryOptions.toQueryString()}`)
-    //     .pipe(map((data: any) => this.convertData(data.items)));
-    // }
-  
     delete(id: number) {
       return this.httpClient
         .delete(`${this.url}/${this.endpoint}/${id}`);
     }
-  
   }

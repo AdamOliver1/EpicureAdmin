@@ -13,3 +13,8 @@ mat-drawer-container {
 mat-drawer-content {
     padding: 20px;
 }
+
+.container{
+    display: flex;
+    flex-direction: column;
+}
