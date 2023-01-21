@@ -1,7 +1,7 @@
-import { Chef } from './../../../../models/Chef';
+import { Chef } from "./../../../../models/Chef";
 import { FieldBase } from "../../fieldBase";
 import { Injectable } from "@angular/core";
-import { DropdownQuestion, TextboxQuestion } from "../../controls";
+import { DropdownField, TextboxField } from "../../controls";
 import { of } from "rxjs";
 import Restaurant from "src/app/models/Restaurant";
 
@@ -11,18 +11,18 @@ import Restaurant from "src/app/models/Restaurant";
 export class RestaurantFormService {
   constructor() {}
 
-  getFields(chefs:Chef[],restaurant?:Restaurant) {
+  getFields(chefs: Chef[], restaurant?: Restaurant) {
     const questions: FieldBase<string>[] = [
-      new DropdownQuestion({
+      new DropdownField({
         key: "chef",
         label: "Chef",
         options: chefs?.map((chef) => {
-return { key: chef._id, value: chef.name }
-        }) ,
+          return { key: chef._id, value: chef.name };
+        }),
         order: 3,
       }),
 
-      new TextboxQuestion({
+      new TextboxField({
         key: "name",
         label: "Name",
         value: restaurant?.name ?? "",
@@ -30,22 +30,20 @@ return { key: chef._id, value: chef.name }
         order: 1,
       }),
 
-      new TextboxQuestion({
+      new TextboxField({
         key: "stars",
         label: "Stars",
         type: "number",
-        value:restaurant?.stars.toString() ?? '0',
+        value: restaurant?.stars.toString(),
         required: true,
-        minNumber:0,
-        maxNumber:5
-        
+        minNumber: 0,
+        maxNumber: 5,
       }),
-      new TextboxQuestion({
+      new TextboxField({
         key: "image",
         label: "image",
         type: "type",
         required: true,
-        
       }),
     ];
 

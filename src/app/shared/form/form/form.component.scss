@@ -8,20 +8,20 @@
     max-width: 600px;
     border-color: black;
     width: 500px;
-    height: 600px;
+    height: auto;
    
 }
 .form-fields{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
     width: 100%;
-   gap:200px;
-     height: 30%;
+//    gap:20px;
+     height: 100%;
 }
 .form-container{
-    padding-top: 80px;
+    padding: 20px;
     border-radius: 20px;
     box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.1);
     background-color:  rgb(28, 185, 130);
@@ -36,6 +36,17 @@
     width: 100%;
     height: auto;
 }
+.form-fields-checkboxes{
+    display: flex;
+    justify-content:flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 20%;
+    height: 25px;
+//    gap:20px;
+    //  height: 100%;
+}
+
 .overlay {
     position: fixed;
     top: 0;
@@ -47,5 +58,21 @@
 }
 
 .button{
-    
+    border-radius: 20px;
+    background-color: wheat;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.row{
+    width: 50%;
+    display: flex
+    ;
+    padding: 20px;
 }

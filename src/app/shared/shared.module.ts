@@ -31,7 +31,7 @@ import { DishService } from '../services/dishService/dish.service';
 import { RestaurantService } from '../services/restaurantService/restaurant.service';
 import { ChefService } from '../services/chefService/chef.service';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -48,6 +48,7 @@ import { BrowserModule } from '@angular/platform-browser';
     FormComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

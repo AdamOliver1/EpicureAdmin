@@ -1,15 +1,12 @@
+import { RestaurantService } from './../../../services/restaurantService/restaurant.service';
+import { DishFormService } from './../../form/services/dishForm/dish-form.service';
 import { Component, Output } from "@angular/core";
+import { Observable } from "rxjs";
 import Dish from "src/app/models/Dish";
 import { DishService } from "src/app/services/dishService/dish.service";
-import { ITableRow } from "../../common/table/tableRow";
+import { IDishRow, ITableRow } from "../../common/table/tableRow";
+import { FieldBase } from "../../form/fieldBase";
 
-export interface IDishRow extends ITableRow {
-  price: number;
-  ingredients?: string[];
-  tags?: string[];
-  restaurant: string;
-  image: string;
-}
 
 @Component({
   selector: "app-dishes",
@@ -26,8 +23,20 @@ export class DishesComponent {
     "ingredients",
     "price",
   ];
+
   @Output() dataSource: IDishRow[] = [];
-  constructor(private dishService: DishService) {}
+  showForm = false;
+  formFields: Observable<FieldBase<any>[]>;
+
+  constructor(private dishService: DishService,
+    private restaurantService:RestaurantService,
+    private dishFormService:DishFormService) {
+
+    this.restaurantService.readAll().subscribe(data => {
+      this.formFields = this.dishFormService.getFields(data);
+    })
+  }
+
   ngOnInit(): void {
     this.dishService.readAll().subscribe((data: Dish[]) => {
      console.log("data: ",data);
@@ -46,5 +55,13 @@ export class DishesComponent {
       });
       // console.log(this.dataSource);
     });
+  }
+
+  closeCard(){
+    this.showForm = false;
+  }
+
+  onClick(){
+    this.showForm = true;
   }
 }

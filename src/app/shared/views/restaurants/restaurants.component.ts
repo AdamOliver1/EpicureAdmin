@@ -2,16 +2,11 @@ import { FieldBase } from "./../../form/fieldBase";
 import { RestaurantService } from "./../../../services/restaurantService/restaurant.service";
 import { Component, OnInit, Output, ViewChild } from "@angular/core";
 import Restaurant from "src/app/models/Restaurant";
-import { ITableRow } from "../../common/table/tableRow";
+import { IRestaurantRow, ITableRow } from "../../common/table/tableRow";
 import { Observable } from "rxjs";
 import { RestaurantFormService } from "../../form/services/restaurantForm/restaurant-form.service";
 import { ChefService } from "src/app/services/chefService/chef.service";
 
-export interface IRestaurantRow extends ITableRow {
-  chef: string;
-  stars: number;
-  image: string;
-}
 
 @Component({
   selector: "app-restaurants",
@@ -22,7 +17,7 @@ export class RestaurantsComponent implements OnInit {
   headers = ["position", "name", "image", "chef", "stars"];
   @Output() dataSource: IRestaurantRow[] = [];
   showForm = false;
-  fields$: Observable<FieldBase<any>[]>;
+  formFields: Observable<FieldBase<any>[]>;
 
   constructor(
     private restaurantService: RestaurantService,
@@ -30,8 +25,7 @@ export class RestaurantsComponent implements OnInit {
     private chefService: ChefService
   ) {
     this.chefService.readAll().subscribe(data => {
-      this.fields$ = this.restaurantFormService.getFields(data);
-
+      this.formFields = this.restaurantFormService.getFields(data);
     })
   }
 
@@ -54,5 +48,9 @@ export class RestaurantsComponent implements OnInit {
   onClick() {
     this.showForm = true;
     console.log("Button clicked!");
+  }
+
+  closeCard(){
+    this.showForm = false;
   }
 }

@@ -6,16 +6,8 @@ import { ITableRow } from './tableRow';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnChanges {
-  ngOnChanges(changes: SimpleChanges): void {
-
-    if(this.headers.includes("ingredients")){
-     this.selectedOption = this.dataSource[0]?.ingredients[0];
-     console.log(this.dataSource[0]);
-     
-    }
-    
-  }
+export class TableComponent  {
+ 
   @Input()dataSource:any[];
   @Input() headers: string[];
   showImageCard = false;
@@ -23,14 +15,13 @@ export class TableComponent implements OnChanges {
   spicyUrl = '../../../../assets/dishesIcons/spicy.svg';
   veganUrl = '../../../../assets/dishesIcons/vegan.svg';
   vegetarianUrl = '../../../../assets/dishesIcons/vegetarian.svg';
+  selectedOption: string;
 
-  selectedOption:string = "open to see"
   openImageCard(url: string) {
-    console.log("sdfsfsfsd");
-    
     this.showImageCard = true;
     this.imageUrl = url;
   }
+
   closeImageCard() {
     this.showImageCard = false;
   }

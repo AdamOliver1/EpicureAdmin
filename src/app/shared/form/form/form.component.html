@@ -2,17 +2,27 @@
 <div class="card">
   <form class="form-container" (ngSubmit)="onSubmit()" [formGroup]="form">
 
-    <div *ngFor="let field of fields" class="form-fields">
+    <div *ngFor="let field of fieldsRegular" class="form-fields">
+      <app-dynamic-form-field [field]="field" [form]="form"></app-dynamic-form-field>
+    </div>
+
+    <div *ngFor="let field of fieldsCheckboxes" class="form-fields-checkboxes">
       <app-dynamic-form-field [field]="field" [form]="form"></app-dynamic-form-field>
     </div>
     
+<div class="row">
+  
 
     <div class="form-fields">
       <button class="button" type="submit" [disabled]="!form.valid">Save</button>
     </div>
+    <div class="form-fields">
+      <button class="button" (click)="closeClick()">Close</button>
+    </div>
+  </div>
   </form>
-
   <div *ngIf="payLoad" class="form-row">
     <strong>Saved the following values</strong><br>{{payLoad}}
   </div>
+ 
 </div>

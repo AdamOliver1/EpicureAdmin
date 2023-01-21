@@ -6,6 +6,8 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
+  Output,
+  EventEmitter,
 } from "@angular/core";
 // import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
@@ -18,7 +20,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
   styleUrls: ["./form.component.scss"],
 })
 export class FormComponent implements OnInit {
-
+  @Output() close = new EventEmitter();
   @Input() fields: FieldBase<string>[] | null = [];
   form!: FormGroup;
   payLoad = '';
@@ -31,5 +33,14 @@ export class FormComponent implements OnInit {
 
   onSubmit() {
     this.payLoad = JSON.stringify(this.form.getRawValue());
+    console.log(this.payLoad);
+    
+  }
+
+  get fieldsCheckboxes(){return this.fields?.filter((f) => f.controlType === 'checkbox')}
+  get fieldsRegular(){return this.fields?.filter((f) => f.controlType !== 'checkbox')}
+
+  closeClick(){
+    this.close.emit();
   }
 }

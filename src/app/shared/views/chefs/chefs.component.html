@@ -1,2 +1,5 @@
+<app-button label="Create" (buttonClick)="onClick()"></app-button>
+
 <app-table [dataSource]="dataSource" [headers]="headers"></app-table>
+<app-form (close)="closeCard()" *ngIf="showForm" [fields]="formFields | async"></app-form>
 

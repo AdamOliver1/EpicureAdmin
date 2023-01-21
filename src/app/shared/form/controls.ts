@@ -1,10 +1,17 @@
 import { FieldBase } from "./fieldBase";
 
-export class TextboxQuestion extends FieldBase<string> {
-  override controlType = 'textbox';
+export class TextboxField extends FieldBase<string> {
+  override controlType = "textbox";
 }
 
+export class DropdownField extends FieldBase<string> {
+  override controlType = "dropdown";
+}
 
-export class DropdownQuestion extends FieldBase<string> {
-  override controlType = 'dropdown';
+export class CheckBoxesField extends FieldBase<boolean> {
+  override controlType = "checkbox";
+}
+
+export class listField extends FieldBase<string[]> {
+  override controlType = "list";
 }

@@ -8,6 +8,7 @@ export class FieldBase<T> {
   order: number;
   controlType: string;
   type: string;
+  isFormGroup:boolean;
   options: {key: string, value: string}[];
 
   constructor(options: {
@@ -17,6 +18,7 @@ export class FieldBase<T> {
       required?: boolean;
       maxNumber?: number;
       minNumber?: number;
+      isFormGroup?:boolean;
       order?: number;
       controlType?: string;
       type?: string;
@@ -28,6 +30,7 @@ export class FieldBase<T> {
     this.required = !!options.required;
     this.maxNumber = options.maxNumber ;
     this.minNumber = options.minNumber;
+    this.isFormGroup = options.isFormGroup || false;
     this.order = options.order === undefined ? 1 : options.order;
     this.controlType = options.controlType || '';
     this.type = options.type || '';
