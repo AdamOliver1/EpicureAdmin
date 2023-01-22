@@ -12,7 +12,7 @@ export class RestaurantFormService {
   constructor() {}
 
   getFields(chefs: Chef[], restaurant?: Restaurant) {
-    const questions: FieldBase<string>[] = [
+    const questions: FieldBase<string | {key:string,value:string}>[] = [
       new DropdownField({
         key: "chef",
         label: "Chef",
