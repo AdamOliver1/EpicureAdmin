@@ -1,0 +1,56 @@
+<div class="overlay"></div>
+<div class="card">
+
+
+    <form class="form-container" (ngSubmit)="onSubmit()" [formGroup]="form">
+
+        <mat-form-field *ngIf="!isSubmitted">
+            <mat-label>name</mat-label>
+            <input matInput formControlName="name" placeholder="name">
+            <mat-error *ngIf="name?.invalid && name?.touched">
+                name required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!isSubmitted">
+            <mat-label>image</mat-label>
+            <input matInput formControlName="image" placeholder="image">
+            <mat-error *ngIf="image?.invalid && image?.touched">
+                image required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!isSubmitted">
+            <mat-label>stars</mat-label>
+            <input matInput type="number" formControlName="stars" placeholder="stars">
+            <mat-error *ngIf="stars?.invalid && stars?.touched">
+                stars required, above 0 and under 6
+            </mat-error>
+        </mat-form-field>
+
+   
+        <mat-form-field *ngIf="!isSubmitted">
+            <mat-label>Chef</mat-label>
+            <mat-select formControlName="chef">
+              <mat-option *ngFor="let chef of chefs" [value]="chef.key">
+                {{chef.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        <div *ngIf="isSubmitted">
+            You Succeeded!
+        </div>
+
+        <div class="button-container">
+            <button *ngIf="!isSubmitted" mat-raised-button type="submit" [disabled]="form.invalid"
+                class="button">{{buttonSubmit}}</button>
+            <button mat-raised-button type="button" (click)="onCloseClick()" class="button">Close</button>
+
+        </div>
+
+
+
+
+    </form>
+</div>

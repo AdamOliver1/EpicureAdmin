@@ -1,25 +1,55 @@
-import { DishFormService } from './../../form/services/dishForm/dish-form.service';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ITableRow } from './tableRow';
-
+import { ActivatedRoute } from "@angular/router";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from "@angular/core";
+import { Router } from "@angular/router";
+import { ApiService } from "src/app/services/apiService/api.service";
+import IModel from "src/app/models/IModel";
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  selector: "app-table",
+  templateUrl: "./table.component.html",
+  styleUrls: ["./table.component.scss"],
 })
-export class TableComponent  {
- 
-  @Input()dataSource:any[];
+export class TableComponent implements OnInit, OnChanges {
+  @Input() dataSource: any[];
   @Input() headers: string[];
+  @Output() deleteEmitter = new EventEmitter();
   showImageCard = false;
   imageUrl: string;
-  spicyUrl = '../../../../assets/dishesIcons/spicy.svg';
-  veganUrl = '../../../../assets/dishesIcons/vegan.svg';
-  vegetarianUrl = '../../../../assets/dishesIcons/vegetarian.svg';
+  spicyUrl = "../../../../assets/dishesIcons/spicy.svg";
+  veganUrl = "../../../../assets/dishesIcons/vegan.svg";
+  vegetarianUrl = "../../../../assets/dishesIcons/vegetarian.svg";
   selectedOption: string;
+  url: string | undefined;
+  constructor(
+    // private chefFormService: ChefFormService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private apiService: ApiService<IModel>
+  ) {}
 
-constructor(private dishFormService:DishFormService){
-}
+  ngOnInit(): void {
+    console.log(this.route.snapshot.routeConfig?.path);
+    this.url = this.route.snapshot.routeConfig?.path;
+    //  this.route. .params.subscribe(params => {
+    //   console.log(params);
+
+    //  })
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes["headers"]) {
+      if (!this.headers.find((h) => h === "operations")) {
+        this.headers.push("operations");
+      }
+    }
+  }
 
   openImageCard(url: string) {
     this.showImageCard = true;
@@ -30,9 +60,15 @@ constructor(private dishFormService:DishFormService){
     this.showImageCard = false;
   }
 
-  onDeleteClick(element:any){
-    this.dishFormService.EditDishEmitter.next(element);
-console.log(element);
+  onDeleteClick(element: any) {
+    this.deleteEmitter.emit();
+    this.deleteEmitter.emit();
+    if (this.url !== undefined) {
+      this.apiService.delete(element.id, this.url).subscribe();
+    }
+  }
 
+  onEditClick(element: any) {
+    this.router.navigateByUrl(`${this.url}/${element.id}`);
   }
 }

@@ -2,12 +2,15 @@ import { Chef } from "../../../../models/Chef";
 import { Injectable } from "@angular/core";
 import { FieldBase } from "../../fieldBase";
 import { DropdownField, TextboxField } from "../../controls";
-import { of } from "rxjs";
+import { of, Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
+  
 })
 export class ChefFormService {
+  EditChefEmitter = new Subject<any>();
+
   getFields(chef?: Chef) {
     const questions: FieldBase<string>[] = [
       new TextboxField({

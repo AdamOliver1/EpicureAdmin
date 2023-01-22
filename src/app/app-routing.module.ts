@@ -9,8 +9,11 @@ const routes: Routes = [
   {path:'' , component:DefaultComponent,children:[
     {path:'',component:RestaurantsComponent},
     {path:'restaurant',component:RestaurantsComponent},
+    {path:'restaurant/:id',component:RestaurantsComponent},
     {path:'chef',component:ChefsComponent},
+    {path:'chef/:id',component:ChefsComponent},
     {path:'dish',component:DishesComponent},
+    {path:'dish/:id',component:DishesComponent},
   ]}
 ];
 @NgModule({

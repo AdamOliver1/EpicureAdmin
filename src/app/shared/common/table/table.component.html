@@ -53,10 +53,10 @@
             <ng-container *ngIf="header === 'operations'" >
                 <div  class="icons-container">
 
-                    <mat-icon>
+                    <mat-icon (click)="onDeleteClick(element)">
                         delete_outline
                     </mat-icon>
-                    <mat-icon (click)="onDeleteClick(element)">
+                    <mat-icon (click)="onEditClick(element)">
                         edit
                     </mat-icon>
                 </div>

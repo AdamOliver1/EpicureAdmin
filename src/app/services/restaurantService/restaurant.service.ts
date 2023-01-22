@@ -9,6 +9,6 @@ import { ApiService } from '../apiService/api.service';
 export class RestaurantService extends ApiService<Restaurant> {
 
   constructor(httpClient: HttpClient) { 
-    super(httpClient,'restaurant')
+    super(httpClient)
   }
 }

@@ -1,4 +1,5 @@
 
-<app-button label="Create" (buttonClick)="onClick()"></app-button>
+<app-button label="Create" (buttonClick)="onClickCreate()"></app-button>
 <app-table [dataSource]="dataSource" [headers]="headers"></app-table>
-<app-form (close)="closeCard()" (submit)="onFormSubmit($event)" *ngIf="showForm" [fields]="formFields | async"></app-form>
+<app-restaurant-form (close)="onFormClose()" (restaurant)="restaurantToUpdate" *ngIf="showForm"></app-restaurant-form>
+<!-- <app-form (close)="closeCard()" (submit)="onFormSubmit($event)" *ngIf="showForm" [fields]="formFields | async"></app-form> -->

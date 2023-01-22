@@ -6,38 +6,38 @@ import IModel from 'src/app/models/IModel';
 @Injectable({
   providedIn: 'root'
 })
-export abstract class ApiService <T extends IModel> {
+export class ApiService <T extends IModel> {
   url:string = 'http://localhost:8000/api/v1';
   constructor(
       private httpClient: HttpClient,
-      private endpoint: string,
      ) {}
   
-    public create(item: T): Observable<T> {
-      console.log(`${this.url}/${this.endpoint}`);
+    public create(item: T,endpoint: string): Observable<T> {
+      console.log(`${this.url}/${endpoint}`);
       console.log(item);
       
       return this.httpClient
-        .post<T>(`${this.url}/${this.endpoint}`,item);    
+        .post<T>(`${this.url}/${endpoint}`,item);    
     }
   
-    public update(item: T): Observable<T> {
+    public update(item: T,endpoint: string): Observable<T> {
       return this.httpClient
-        .put<T>(`${this.url}/${this.endpoint}/${item._id}`,
+        .put<T>(`${this.url}/${endpoint}/${item._id}`,
          item)
     }
   
-    readAll(): Observable<T[]> {
-      return this.httpClient.get(`${this.url}/${this.endpoint}`) as Observable<T[]>;
-     
+    readAll(endpoint: string): Observable<T[]> {
+      return this.httpClient.get(`${this.url}/${endpoint}`) as Observable<T[]>;
     }
-    readOne(id: number): Observable<any> {
-      return this.httpClient.get(`${this.url}/${this.endpoint}/${id}`)
-     
+
+    readOne(id: number,endpoint:string): Observable<any> {
+      return this.httpClient.get(`${this.url}/${endpoint}/${id}`)
     }
     
-    delete(id: number) {
+    public delete(id: number,endpoint:string) {
+      console.log(`${this.url}/${endpoint}/disable/${id}`);
+      
       return this.httpClient
-        .delete(`${this.url}/${this.endpoint}/${id}`);
+        .put(`${this.url}/${endpoint}/disable/${id}`,{});
     }
   }

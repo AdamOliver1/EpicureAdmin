@@ -1,3 +1,4 @@
+import { ApiService } from "src/app/services/apiService/api.service";
 import { FieldBase } from "./../../form/fieldBase";
 import { RestaurantService } from "./../../../services/restaurantService/restaurant.service";
 import { Component, OnInit, Output, ViewChild } from "@angular/core";
@@ -6,7 +7,8 @@ import { IRestaurantRow, ITableRow, Type } from "../../common/table/tableRow";
 import { Observable } from "rxjs";
 import { RestaurantFormService } from "../../form/services/restaurantForm/restaurant-form.service";
 import { ChefService } from "src/app/services/chefService/chef.service";
-
+import { ActivatedRoute, Router } from "@angular/router";
+import { Chef } from "src/app/models/Chef";
 
 @Component({
   selector: "app-restaurants",
@@ -14,50 +16,71 @@ import { ChefService } from "src/app/services/chefService/chef.service";
   styleUrls: ["./restaurants.component.scss"],
 })
 export class RestaurantsComponent implements OnInit {
-  headers = ["position", "name", "image", "chef", "stars"];
+  headers = ["name", "image", "chef", "stars"];
   @Output() dataSource: IRestaurantRow[] = [];
   showForm = false;
   formFields: Observable<FieldBase<any>[]>;
-
+  restaurantToUpdate: Restaurant;
+  chefs: Chef[] = [];
   constructor(
-    private restaurantService: RestaurantService,
     private restaurantFormService: RestaurantFormService,
-    private chefService: ChefService
-  ) {
-    this.chefService.readAll().subscribe(data => {
-      this.formFields = this.restaurantFormService.getFields(data);
-    })
-  }
+    private router: Router,
+    private route: ActivatedRoute,
+    private chefService: ApiService<Chef>,
+    private restaurantService: ApiService<Restaurant>
+  ) {}
 
   ngOnInit(): void {
-    this.restaurantService.readAll().subscribe((data: Restaurant[]) => {
-      this.dataSource = [];
-      data.forEach((restaurant, i) => {
-        this.dataSource.push({
-          type:Type.Restaurant,
-          id:restaurant._id,
-          position: i + 1,
-          name: restaurant.name,
-          image: restaurant.image,
-          stars: restaurant.stars,
-          chef: restaurant.chef.name,
-        });
-      });
-      console.log(this.dataSource);
+    this.route.params.subscribe((params) => {
+      const id = params["id"];
+      if (id) {
+        this.showForm = true;
+      }
     });
+
+    this.chefService.readAll("chef").subscribe((data) => {
+      this.chefs = data;
+    });
+
+    this.restaurantService
+      .readAll("restaurant")
+      .subscribe((data: Restaurant[]) => {
+        this.dataSource = [];
+        data.forEach((restaurant, i) => {
+          this.dataSource.push({
+            type: Type.Restaurant,
+            id: restaurant._id,
+            position: i + 1,
+            name: restaurant.name,
+            image: restaurant.image,
+            stars: restaurant.stars,
+            chef: restaurant.chef.name,
+          });
+        });
+        console.log(this.dataSource);
+      });
   }
 
-  onClick() {
+  onFormClose() {
+    this.router.navigateByUrl("/restaurant");
+    this.showForm = false;
+    this.ngOnInit();
+    this.ngOnInit();
+  }
+
+  onClickCreate() {
     this.showForm = true;
-    console.log("Button clicked!");
   }
 
-  closeCard(){
+  closeCard() {
     this.showForm = false;
   }
 
-  onFormSubmit(event:any){
+  onFormSubmit(event: any) {
     console.log("onFormSubmit restauarnt");
-    
+  }
+
+  onEmitRefresh() {
+    this.ngOnInit();
   }
 }

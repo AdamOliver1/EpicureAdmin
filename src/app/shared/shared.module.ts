@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './template/header/header.component';
 import { SideBarComponent } from './template/side-bar/side-bar.component';
@@ -30,7 +30,11 @@ import { RestaurantService } from '../services/restaurantService/restaurant.serv
 import { ChefService } from '../services/chefService/chef.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-
+import { ChefFormComponent } from './form/chef-form/chef-form.component';
+import { ChefFormService } from './form/services/chefForm/chef-form.service';
+import { DishFormComponent } from './form/dish-form/dish-form.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { RestaurantFormComponent } from './form/restaurant-form/restaurant-form.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +49,9 @@ import { FormsModule } from '@angular/forms';
     ChefsComponent,
     CreateButtonComponent,
     FormComponent,
+    ChefFormComponent,
+    DishFormComponent,
+    RestaurantFormComponent,
   ],
   imports: [
     FormsModule,
@@ -53,6 +60,7 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
     MatSelectModule,
     MatTooltipModule,
     CommonModule,
@@ -79,7 +87,9 @@ import { FormsModule } from '@angular/forms';
   providers:[
     DishService,
     RestaurantService,
-    ChefService
+    ChefFormService,
+    // { provide: ChefFormService, useExisting: ChefFormService },
+    ChefService,
   ]
 })
 export class SharedModule { }

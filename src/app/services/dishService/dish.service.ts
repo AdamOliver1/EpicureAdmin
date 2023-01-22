@@ -9,6 +9,6 @@ import { ApiService } from '../apiService/api.service';
 export class DishService extends ApiService<Dish> {
 
   constructor(httpClient: HttpClient) { 
-    super(httpClient,'dish')
+    super(httpClient)
   }
 }

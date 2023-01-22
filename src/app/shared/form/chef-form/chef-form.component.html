@@ -1,0 +1,46 @@
+<div class="overlay"></div>
+<div class="card">
+
+
+    <form  class="form-container" (ngSubmit)="onSubmit()" [formGroup]="form">
+
+        
+        <mat-form-field *ngIf="!isSubmitted">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" placeholder="name">
+            <mat-error *ngIf="name?.invalid && name?.touched">
+                name required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!isSubmitted">
+            <mat-label>image</mat-label>
+            <input matInput formControlName="image" placeholder="image">
+            <mat-error *ngIf="image?.invalid && image?.touched">
+                image required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!isSubmitted">
+            <mat-label>description</mat-label>
+            <input matInput formControlName="description" placeholder="description">
+            <mat-error *ngIf="description?.invalid && description?.touched">
+                description required
+            </mat-error>
+        </mat-form-field>
+        <div *ngIf="isSubmitted">
+            You Succeeded!
+        </div>
+
+        <div class="button-container">
+            <button *ngIf="!isSubmitted" mat-raised-button type="submit" [disabled]="form.invalid"
+                class="button">{{buttonSubmit}}</button>
+            <button mat-raised-button type="button" (click)="onCloseClick()" class="button">Close</button>
+
+        </div>
+
+
+
+
+    </form>
+</div>

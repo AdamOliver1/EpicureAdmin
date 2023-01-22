@@ -1,53 +1,64 @@
 import { Observable } from "rxjs";
-import { ChefService } from "./../../../services/chefService/chef.service";
-import { DishService } from "./../../../services/dishService/dish.service";
-import { Component, Output } from "@angular/core";
+import { ChangeDetectorRef, Component, Output } from "@angular/core";
 import { IChefRow, ITableRow, Type } from "../../common/table/tableRow";
 import { Chef } from "src/app/models/Chef";
 import { FieldBase } from "../../form/fieldBase";
-import { ChefFormService } from "../../form/services/chefForm/chef-form.service";
-
-
+import { ActivatedRoute, Router } from "@angular/router";
+import { ApiService } from "src/app/services/apiService/api.service";
 @Component({
   selector: "app-chefs",
   templateUrl: "./chefs.component.html",
   styleUrls: ["./chefs.component.scss"],
 })
 
-//TODO divide data source and form to components
 export class ChefsComponent {
   headers = ["position", "name", "image", "description"];
   @Output() dataSource: IChefRow[] = [];
 
   formFields: Observable<FieldBase<any>[]>;
-  showForm = false;
+  showForm: boolean;
+  chefToUpdate: Chef;
 
   constructor(
-    private chefService: ChefService,
-    private chefFormService: ChefFormService
+    private route: ActivatedRoute,
+    private router: Router,
+    private apiService: ApiService<Chef>,
   ) {
-    this.formFields = this.chefFormService.getFields();
   }
 
+
   ngOnInit(): void {
-    this.chefService.readAll().subscribe((data: Chef[]) => {
+    this.route.params.subscribe((params) => {
+      const id = params["id"];
+      if (id) {
+          this.showForm = true;
+      }
+    });
+
+    this.apiService.readAll("chef").subscribe((data: Chef[]) => {
       this.dataSource = [];
       data.forEach((chef, i) => {
         this.dataSource.push({
-          type:Type.Chef,
-          id:chef._id,
+          type: Type.Chef,
+          id: chef._id,
           position: i + 1,
           name: chef.name,
           image: chef.image,
           description: chef.description,
         });
       });
-      console.log(this.dataSource);
     });
   }
 
-  closeCard() {
+  onEmitRefresh(){
+this.ngOnInit();
+  }
+
+  onFormClose() {
+    this.router.navigateByUrl("/chef");
     this.showForm = false;
+    this.ngOnInit();
+    this.ngOnInit();
   }
 
   onClick() {

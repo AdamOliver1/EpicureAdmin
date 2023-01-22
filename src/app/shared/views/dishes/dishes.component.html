@@ -1,3 +1,4 @@
 <app-button label="Create" (buttonClick)="onClickCreate()"></app-button>
-<app-table [dataSource]="dataSource" [headers]="headers"></app-table>
-<app-form (submit)="onFormSubmit($event)" (close)="onFormClose($event)" *ngIf="showForm" [fields]="formFields | async"></app-form>
+<app-table (deleteEmitter)="onEmitRefresh()" [dataSource]="dataSource" [headers]="headers"></app-table>
+<app-dish-form (close)="onFormClose()" (dish)="dishToUpdate" *ngIf="showForm"></app-dish-form>
+<!-- <app-form (submit)="onFormSubmit($event)" (close)="onFormClose($event)" *ngIf="showForm" [fields]="formFields | async"></app-form> -->
