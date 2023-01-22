@@ -2,7 +2,7 @@ import { Observable } from "rxjs";
 import { ChefService } from "./../../../services/chefService/chef.service";
 import { DishService } from "./../../../services/dishService/dish.service";
 import { Component, Output } from "@angular/core";
-import { IChefRow, ITableRow } from "../../common/table/tableRow";
+import { IChefRow, ITableRow, Type } from "../../common/table/tableRow";
 import { Chef } from "src/app/models/Chef";
 import { FieldBase } from "../../form/fieldBase";
 import { ChefFormService } from "../../form/services/chefForm/chef-form.service";
@@ -34,6 +34,8 @@ export class ChefsComponent {
       this.dataSource = [];
       data.forEach((chef, i) => {
         this.dataSource.push({
+          type:Type.Chef,
+          id:chef._id,
           position: i + 1,
           name: chef.name,
           image: chef.image,

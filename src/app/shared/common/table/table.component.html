@@ -41,9 +41,25 @@
                 </ng-container>
             </ng-container>
 
+            <ng-container *ngIf="header === 'restaurant'">
+                {{element[header].value}}
+            </ng-container>
+
             <!--others rows -->
-            <ng-container *ngIf="header !== 'image' && header !== 'ingredients' && header !== 'tags' && header !== 'stars'">
+            <ng-container *ngIf="header !== 'image' && header !== 'ingredients' && header !== 'tags' && header !== 'stars' && header !== 'operations' && header !== 'restaurant'">
                 {{element[header]}}
+            </ng-container>
+
+            <ng-container *ngIf="header === 'operations'" >
+                <div  class="icons-container">
+
+                    <mat-icon>
+                        delete_outline
+                    </mat-icon>
+                    <mat-icon (click)="onDeleteClick(element)">
+                        edit
+                    </mat-icon>
+                </div>
             </ng-container>
         </td>
     </ng-container>

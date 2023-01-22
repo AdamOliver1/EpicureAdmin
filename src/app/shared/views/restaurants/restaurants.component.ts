@@ -2,7 +2,7 @@ import { FieldBase } from "./../../form/fieldBase";
 import { RestaurantService } from "./../../../services/restaurantService/restaurant.service";
 import { Component, OnInit, Output, ViewChild } from "@angular/core";
 import Restaurant from "src/app/models/Restaurant";
-import { IRestaurantRow, ITableRow } from "../../common/table/tableRow";
+import { IRestaurantRow, ITableRow, Type } from "../../common/table/tableRow";
 import { Observable } from "rxjs";
 import { RestaurantFormService } from "../../form/services/restaurantForm/restaurant-form.service";
 import { ChefService } from "src/app/services/chefService/chef.service";
@@ -34,6 +34,8 @@ export class RestaurantsComponent implements OnInit {
       this.dataSource = [];
       data.forEach((restaurant, i) => {
         this.dataSource.push({
+          type:Type.Restaurant,
+          id:restaurant._id,
           position: i + 1,
           name: restaurant.name,
           image: restaurant.image,
@@ -52,5 +54,10 @@ export class RestaurantsComponent implements OnInit {
 
   closeCard(){
     this.showForm = false;
+  }
+
+  onFormSubmit(event:any){
+    console.log("onFormSubmit restauarnt");
+    
   }
 }

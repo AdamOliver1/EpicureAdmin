@@ -1,25 +1,27 @@
 <div class="overlay"></div>
 <div class="card">
-  <form class="form-container" (ngSubmit)="onSubmit()" [formGroup]="form">
+  <form class="form-container"(ngSubmit)="onSubmit()" [formGroup]="form">
+    <div class="fields-container"  *ngIf="!success">
+      <div *ngFor="let field of fieldsRegular" class="form-fields">
+        <app-dynamic-form-field [field]="field" [form]="form"></app-dynamic-form-field>
+      </div>
 
-    <div *ngFor="let field of fieldsRegular" class="form-fields">
-      <app-dynamic-form-field [field]="field" [form]="form"></app-dynamic-form-field>
+      <div *ngFor="let field of fieldsCheckboxes" class="form-fields-checkboxes">
+        <app-dynamic-form-field [field]="field" [form]="form"></app-dynamic-form-field>
+      </div>
     </div>
 
-    <div *ngFor="let field of fieldsCheckboxes" class="form-fields-checkboxes">
-      <app-dynamic-form-field [field]="field" [form]="form"></app-dynamic-form-field>
+    <div class="row">
+      <div *ngIf="!success" class="form-fields">
+        <button class="button" type="submit" [disabled]="!form.valid">Save</button>
+      </div>
+      <div class="form-fields">
+        <div class="success" *ngIf="success">
+          you succeed! click to close
+        </div>
+        <button class="button" type="button" (click)="closeClick()">Close</button>
+      </div>
     </div>
-    
-<div class="row">
-  
-
-    <div class="form-fields">
-      <button class="button" type="submit" [disabled]="!form.valid">Save</button>
-    </div>
-    <div class="form-fields">
-      <button class="button" (click)="closeClick()">Close</button>
-    </div>
-  </div>
   </form>
- 
+
 </div>

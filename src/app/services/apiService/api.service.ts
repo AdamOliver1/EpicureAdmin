@@ -27,8 +27,8 @@ export abstract class ApiService <T extends IModel> {
          item)
     }
   
-    readAll(): Observable<any> {
-      return this.httpClient.get(`${this.url}/${this.endpoint}`)
+    readAll(): Observable<T[]> {
+      return this.httpClient.get(`${this.url}/${this.endpoint}`) as Observable<T[]>;
      
     }
     readOne(id: number): Observable<any> {

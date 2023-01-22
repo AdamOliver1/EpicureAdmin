@@ -1,14 +1,20 @@
 
 export interface ITableRow {
+  id:string;
     position: number;
     name: string;
+    type:Type;
   }
-
+export enum Type{
+  Dish,
+  Restaurant,
+  Chef
+}
 export interface IDishRow extends ITableRow {
   price: number;
   ingredients?: string[];
   tags?: string[];
-  restaurant: string;
+  restaurant: {key:string,value:string};
   image: string;
 }
 

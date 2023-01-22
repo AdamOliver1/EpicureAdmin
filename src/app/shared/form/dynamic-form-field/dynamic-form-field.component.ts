@@ -14,7 +14,7 @@ export class DynamicFormFieldComponent {
   inputText: string;
   isFirst = true;
   listInput: string;
-  // selectedIngredient:String;
+  selectedKeyDropdown:string;
   constructor() {}
 
   onInputChange() {
@@ -22,12 +22,14 @@ export class DynamicFormFieldComponent {
   }
   onSelectClicked(){
     const ingredients = this.form.controls["ingredients"];
-    const ingredientsArray = ingredients.value as string[] ;
+    const ingredientsArray = ingredients.value as string[];
     if(ingredientsArray.length === 1){
       ingredients.setValue([]);
     }
   }
+
   addIngredient() {
+    if(this.input.nativeElement.value === "") return;
     const ingredients = this.form.controls["ingredients"];
     ingredients.setValue([
       ...ingredients.value,
@@ -38,31 +40,6 @@ export class DynamicFormFieldComponent {
 
   get getIngredients() {
     return this.form.controls["ingredients"].value;
-  }
-
-  onListInputChange(event: any) {
-    console.log(this.listInput);
-  }
-
-
-  onOptionClicked(event: any) {
-    const ingredientToRemove = event.target.value;
-    const ingredients = this.form.controls["ingredients"];
-    const ingredientsArray = ingredients.value as string[] ;
-    // console.log(ingredientsArray);
-    // console.log(ingredientsArray.indexOf(ingredientToRemove));
-    
-    ingredientsArray.splice(ingredientsArray.indexOf(ingredientToRemove),1)
-    ingredients.setValue([...ingredients.value])
-    // console.log(ingredientsArray);
-    // console.log(this.form.controls["ingredients"]);
-  }
-
-  private checkIfNotValid(name: string) {
-    return (
-      this.form.controls[this.field.key].hasError(name) &&
-      this.form.controls[this.field.key].touched
-    );
   }
 
   get checkIfNotValidRequired() {
@@ -78,5 +55,25 @@ export class DynamicFormFieldComponent {
   }
   get checkIfNotValidMax() {
     return this.checkIfNotValid("max");
+  }
+
+  onListInputChange(event: any) {
+    console.log(this.listInput);
+  }
+
+  onOptionClicked(event: any) {
+    const ingredientToRemove = event.target.value;
+    const ingredients = this.form.controls["ingredients"];
+    const ingredientsArray = ingredients.value as string[] ;
+    
+    ingredientsArray.splice(ingredientsArray.indexOf(ingredientToRemove),1)
+    ingredients.setValue([...ingredients.value])
+  }
+
+  private checkIfNotValid(name: string) {
+    return (
+      this.form.controls[this.field.key].hasError(name) &&
+      this.form.controls[this.field.key].touched
+    );
   }
 }

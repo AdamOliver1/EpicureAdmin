@@ -5,7 +5,7 @@ export class TextboxField extends FieldBase<string> {
 }
 
 
-export class DropdownField extends FieldBase<string> {
+export class DropdownField extends FieldBase<{key:string,value:string}> {
   override controlType = "dropdown";
 }
 

@@ -24,14 +24,13 @@ import {MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-// import { DynamicFormComponent } from './dynamic-form.component';
-// import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
 import { DynamicFormFieldComponent } from './form/dynamic-form-field/dynamic-form-field.component';
 import { DishService } from '../services/dishService/dish.service';
 import { RestaurantService } from '../services/restaurantService/restaurant.service';
 import { ChefService } from '../services/chefService/chef.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -46,7 +45,6 @@ import { FormsModule } from '@angular/forms';
     ChefsComponent,
     CreateButtonComponent,
     FormComponent,
-    DishesComponent
   ],
   imports: [
     FormsModule,
@@ -70,14 +68,13 @@ import { FormsModule } from '@angular/forms';
     MatIconModule,
     MatButtonModule,
     HttpClientModule,
-
   ],
   exports:[
     HeaderComponent,
     FooterComponent,
     SideBarComponent,
     TableComponent,
-    DishesComponent
+    DishesComponent,
   ],
   providers:[
     DishService,

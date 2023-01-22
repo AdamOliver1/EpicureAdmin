@@ -14,7 +14,11 @@
   .demo-table {
     width: 100%;
   }
-  
+  .icons-container{
+    display: flex;
+    width: 60px;
+    justify-content: space-between;
+  }
   .mat-column-demo-position {
     width: 32px;
     border-right: 1px solid currentColor;

@@ -1,7 +1,7 @@
 <div class="field" [formGroup]="form">
     <div *ngIf="isNotCheckbox" class="label" [attr.for]="field.key">{{field.label}}</div>
 
-    <div [ngSwitch]="field.controlType">
+    <div class="container-field" [ngSwitch]="field.controlType">
 
         <!-- add here more fields if necessary -->
 
@@ -10,13 +10,13 @@
             <div class="list">
                 <div class="ingredient-input-container">
                     <input class="input-ingredient" #myInput type="text" id="ingredient-field">
-                    <button class="button" (click)="addIngredient()">Add Ingredient</button>
+                    <button class="button" type="button" (click)="addIngredient()">Add Ingredient</button>
                 </div>
                 <select (click)="onSelectClicked()" (change)="onOptionClicked($event)" class="input" [id]="field.key">
                     <option *ngFor="let opt of getIngredients; let i = index" [value]="opt">
                         <div class="option-container">
-                                {{opt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                Click to delete
+                                {{opt}}&nbsp;&nbsp;&nbsp;&nbsp; - 
+                                click to delete
                         </div>
                     </option>
                 </select>
@@ -24,14 +24,15 @@
         </ng-container>
 
         <!-- checkbox option -->
-        <ng-container class="checkboxx" *ngSwitchCase="'checkbox'">
-            <input [formControlName]="field.key" type="checkbox" [value]="field.value"> {{field.label}}
-        </ng-container>
+        <ng-container class="checkbox" *ngSwitchCase="'checkbox'">
+            <input  [formControlName]="field.key" type="checkbox" [value]="field.value"> {{field.label}}
+        </ng-container> 
 
         <!-- textbox option -->
         <input (ngModelChange)="onInputChange()" class="input" *ngSwitchCase="'textbox'" [formControlName]="field.key"
             [id]="field.key" [type]="field.type">
 
+            
         <!-- dropdown option -->
         <select class="input" [id]="field.key" *ngSwitchCase="'dropdown'" [formControlName]="field.key">
             <option *ngFor="let opt of field.options" [value]="opt.key">{{opt.value}}</option>

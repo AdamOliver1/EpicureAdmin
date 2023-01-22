@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items:center;
     margin-bottom: 16px;
-
+width: 100%;
 }
 
 .button{
@@ -31,7 +31,7 @@
 }
 
 .input-ingredient{
-  
+    opacity: 0.85;
     font-size: 16px;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -40,6 +40,8 @@
 }
 
 .input{
+    opacity: 0.85;
+    // background-color:  rgb(28, 185, 130);
     font-size: 16px;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -73,4 +75,13 @@
     color: red;
   font-size: 20px;
   margin-top: 8px;
+}
+
+.checkbox{
+    // width: 100%;
+    // background-color: red;
+}
+
+.container-field{
+    width: 100%;
 }
