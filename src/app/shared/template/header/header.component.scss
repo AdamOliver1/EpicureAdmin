@@ -3,9 +3,33 @@ ul li {
 }
 
 .content{
-    padding-left: 20px;
+    margin-left: 20px;
+    // margin-top: 40px;
 }
 
 mat-toolbar{
     background-color: rgb(28, 185, 130);
+}
+
+.signout{
+    margin-left: 500px;
+    background-color: rgb(28, 185, 130);
+    border-color:  rgb(28, 185, 130);;
+    border-radius: 20px;
+}
+
+.row{
+    display: flex;
+    justify-content: center;
+    // width:20%;
+    align-items: center;
+    font-family: "Helvetica Neue";
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    // width:20%;
+    align-items: center;
 }

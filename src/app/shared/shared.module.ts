@@ -19,26 +19,21 @@ import { ChefsComponent } from './views/chefs/chefs.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import { CreateButtonComponent } from './common/create-button/create-button.component';
-import { FormComponent } from './form/form/form.component';
 import {MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DynamicFormFieldComponent } from './form/dynamic-form-field/dynamic-form-field.component';
-import { DishService } from '../services/dishService/dish.service';
-import { RestaurantService } from '../services/restaurantService/restaurant.service';
-import { ChefService } from '../services/chefService/chef.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ChefFormComponent } from './form/chef-form/chef-form.component';
-import { ChefFormService } from './form/services/chefForm/chef-form.service';
 import { DishFormComponent } from './form/dish-form/dish-form.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { RestaurantFormComponent } from './form/restaurant-form/restaurant-form.component';
-
+import { LoginComponent } from './views/login/login.component';
+import { MatCardModule } from '@angular/material/card';
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [
-    DynamicFormFieldComponent,
     HeaderComponent,
     FooterComponent,
     SideBarComponent,
@@ -48,17 +43,19 @@ import { RestaurantFormComponent } from './form/restaurant-form/restaurant-form.
     DishesComponent,
     ChefsComponent,
     CreateButtonComponent,
-    FormComponent,
     ChefFormComponent,
     DishFormComponent,
     RestaurantFormComponent,
+    LoginComponent,
   ],
   imports: [
     FormsModule,
     BrowserModule,
     ReactiveFormsModule,
+    MatMenuModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
+    MatCardModule,
     MatInputModule,
     MatCheckboxModule,
     MatSelectModule,
@@ -83,13 +80,6 @@ import { RestaurantFormComponent } from './form/restaurant-form/restaurant-form.
     SideBarComponent,
     TableComponent,
     DishesComponent,
-  ],
-  providers:[
-    DishService,
-    RestaurantService,
-    ChefFormService,
-    // { provide: ChefFormService, useExisting: ChefFormService },
-    ChefService,
   ]
 })
 export class SharedModule { }

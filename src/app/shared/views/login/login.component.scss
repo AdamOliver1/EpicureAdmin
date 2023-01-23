@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+}
+
+.login-container{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

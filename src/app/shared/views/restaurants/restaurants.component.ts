@@ -1,12 +1,8 @@
 import { ApiService } from "src/app/services/apiService/api.service";
-import { FieldBase } from "./../../form/fieldBase";
-import { RestaurantService } from "./../../../services/restaurantService/restaurant.service";
 import { Component, OnInit, Output, ViewChild } from "@angular/core";
 import Restaurant from "src/app/models/Restaurant";
 import { IRestaurantRow, ITableRow, Type } from "../../common/table/tableRow";
 import { Observable } from "rxjs";
-import { RestaurantFormService } from "../../form/services/restaurantForm/restaurant-form.service";
-import { ChefService } from "src/app/services/chefService/chef.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Chef } from "src/app/models/Chef";
 
@@ -19,11 +15,9 @@ export class RestaurantsComponent implements OnInit {
   headers = ["name", "image", "chef", "stars"];
   @Output() dataSource: IRestaurantRow[] = [];
   showForm = false;
-  formFields: Observable<FieldBase<any>[]>;
   restaurantToUpdate: Restaurant;
   chefs: Chef[] = [];
   constructor(
-    private restaurantFormService: RestaurantFormService,
     private router: Router,
     private route: ActivatedRoute,
     private chefService: ApiService<Chef>,
@@ -72,15 +66,10 @@ export class RestaurantsComponent implements OnInit {
     this.showForm = true;
   }
 
-  closeCard() {
-    this.showForm = false;
-  }
 
-  onFormSubmit(event: any) {
-    console.log("onFormSubmit restauarnt");
-  }
 
   onEmitRefresh() {
+    this.showForm = false;
     this.ngOnInit();
   }
 }

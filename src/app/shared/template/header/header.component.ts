@@ -1,4 +1,7 @@
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/loginService/login.service';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { getCookie, setCookie } from "typescript-cookie";
 
 @Component({
   selector: 'app-header',
@@ -7,6 +10,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class HeaderComponent {
   @Output() toggleSidebarForme: EventEmitter<any> = new EventEmitter();
+
+  constructor(private loginService:LoginService,private router:Router){
+
+  }
+
   toggleSidebar() {
     this.toggleSidebarForme.emit();
     setTimeout(() => {
@@ -14,5 +22,10 @@ export class HeaderComponent {
         new Event('resize')
       );
     }, 200);
+  }
+
+  signOutClick(){
+this.loginService.logout();
+this.router.navigate(['login'])
   }
 }

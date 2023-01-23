@@ -4,16 +4,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultComponent } from './layout/default/default.component';
 import { ChefsComponent } from './shared/views/chefs/chefs.component';
 import { DishesComponent } from './shared/views/dishes/dishes.component';
+import { LoginComponent } from './shared/views/login/login.component';
+import { AuthGuard } from './shared/guards/auth-guard.guard';
 
 const routes: Routes = [
   {path:'' , component:DefaultComponent,children:[
-    {path:'',component:RestaurantsComponent},
-    {path:'restaurant',component:RestaurantsComponent},
-    {path:'restaurant/:id',component:RestaurantsComponent},
-    {path:'chef',component:ChefsComponent},
-    {path:'chef/:id',component:ChefsComponent},
-    {path:'dish',component:DishesComponent},
-    {path:'dish/:id',component:DishesComponent},
+    {path:'',component:LoginComponent},
+    {path:'login',component:LoginComponent},
+    {path:'restaurant',component:RestaurantsComponent,canActivate:[AuthGuard]},
+    {path:'restaurant/:id',component:RestaurantsComponent,canActivate:[AuthGuard]},
+    {path:'chef',component:ChefsComponent,canActivate:[AuthGuard]},
+    {path:'chef/:id',component:ChefsComponent,canActivate:[AuthGuard]},
+    {path:'dish',component:DishesComponent,canActivate:[AuthGuard]},
+    {path:'dish/:id',component:DishesComponent,canActivate:[AuthGuard]},
   ]}
 ];
 @NgModule({

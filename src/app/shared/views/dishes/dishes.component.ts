@@ -1,12 +1,8 @@
-import { RestaurantService } from "./../../../services/restaurantService/restaurant.service";
+import { ApiService } from "src/app/services/apiService/api.service";
 import { Component, OnInit, Output } from "@angular/core";
-import { Observable } from "rxjs";
 import Dish from "src/app/models/Dish";
-import { DishService } from "src/app/services/dishService/dish.service";
 import { IDishRow, Type } from "../../common/table/tableRow";
-import { FieldBase } from "../../form/fieldBase";
 import Restaurant from "src/app/models/Restaurant";
-import { DishFormService } from "../../form/services/dishForm/dish-form.service";
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
@@ -15,28 +11,19 @@ import { ActivatedRoute, Router } from "@angular/router";
   styleUrls: ["./dishes.component.scss"],
 })
 export class DishesComponent implements OnInit {
-  headers = [
-   
-    "name",
-    "image",
-    "restaurant",
-    "tags",
-    "ingredients",
-    "price",
-  ];
+  headers = ["name", "image", "restaurant", "tags", "ingredients", "price"];
 
   @Output() dataSource: IDishRow[] = [];
   showForm = false;
   allRestaurants: Restaurant[];
-  dishToUpdate:Dish;
+  dishToUpdate: Dish;
   constructor(
-    private dishService: DishService,
-    private restaurantService: RestaurantService,
+    private restaurantService: ApiService<Restaurant>,
+    private dishService: ApiService<Dish>,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {
-
-    this.restaurantService.readAll('dish').subscribe((data) => {
+    this.restaurantService.readAll("dish").subscribe((data) => {
       this.allRestaurants = data;
     });
   }
@@ -45,11 +32,29 @@ export class DishesComponent implements OnInit {
     this.route.params.subscribe((params) => {
       const id = params["id"];
       if (id) {
-          this.showForm = true;
+        this.showForm = true;
       }
+      this.createDataSource();
     });
 
-    this.dishService.readAll('dish').subscribe((data: Dish[]) => {
+    
+  }
+
+  onFormClose() {
+    this.createDataSource();
+    this.showForm = false;
+  }
+
+  onClickCreate() {
+    this.showForm = true;
+  }
+
+  onEmitRefresh() {
+    this.createDataSource();
+  }
+
+  private createDataSource() {
+    this.dishService.readAll("dish").subscribe((data: Dish[]) => {
       console.log("data: ", data);
 
       this.dataSource = [];
@@ -60,7 +65,7 @@ export class DishesComponent implements OnInit {
           position: i + 1,
           name: dish.name,
           image: dish.image,
-          restaurant: {key:dish.restaurant._id,value:dish.restaurant.name},
+          restaurant: { key: dish.restaurant._id, value: dish.restaurant.name },
           tags: dish.tags,
           ingredients: dish.ingredients,
           price: dish.price,
@@ -68,22 +73,4 @@ export class DishesComponent implements OnInit {
       });
     });
   }
-
-
-  onFormClose() {
-    this.router.navigateByUrl("/dish");
-    this.showForm = false;
-    this.ngOnInit();
-  }
-
-  onClickCreate() {
-    this.showForm = true;
-  }
-
-
-  onEmitRefresh(){
-    this.ngOnInit();
-      }
-
-
 }
