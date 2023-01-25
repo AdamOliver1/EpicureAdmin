@@ -12,12 +12,14 @@ import { ApiService } from 'src/app/services/apiService/api.service';
 })
 export class RestaurantFormComponent  implements OnInit {
  
-  isSubmitted = false;
-  isUpdate = false;
-  restaurantToUpdate: Restaurant;
-  form: FormGroup;
   @Output() close = new EventEmitter();
-  chefs: { key: string; value: string }[] = [];
+
+  private isUpdate = false;
+  private restaurantToUpdate: Restaurant;
+
+  protected form: FormGroup;
+  protected isSubmitted = false;
+  protected chefs: { key: string; value: string }[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -27,29 +29,34 @@ export class RestaurantFormComponent  implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.chefService.readAll("chef").subscribe((data) => {
-      console.log(data);
-      
-      data.forEach((c) => {
-        this.chefs.push({ key: c._id, value: c.name });
-      });
-    });
+   
+  this._initChefs();
+    this._createForm();
+   this._checkIfUpdate();
+  }
 
-    this.createForm();
+  private _checkIfUpdate(){
     this.route.params.subscribe((params) => {
       const id = params["id"];
       if (id) {
         this.restaurantService.readOne(id, "restaurant").subscribe((restaurant) => {
-
           this.isUpdate = true;
           this.restaurantToUpdate = restaurant;
-          this.createForm();
+          this._createForm();
         });
       }
     });
   }
 
-  private createForm() {
+  private _initChefs(){
+    this.chefService.readAll("chef").subscribe((data) => {
+      data.forEach((c) => {
+        this.chefs.push({ key: c._id, value: c.name });
+      });
+    });
+  }
+
+  private _createForm() {
     this.form = this.fb.group({
       _id: this.restaurantToUpdate?._id,
       name: [this.restaurantToUpdate?.name, Validators.required],
@@ -62,30 +69,27 @@ export class RestaurantFormComponent  implements OnInit {
     });
   }
 
-  get name() {
-    return this.getField("name");
+  protected get name() {
+    return this._getField("name");
   }
-  get chef() {
-    return this.getField("chef");
+  protected get chef() {
+    return this._getField("chef");
   }
 
-  get buttonSubmit() {
+  protected get buttonSubmit() {
     return this.isUpdate ? "Update" : "Create";
   }
 
-  get image() {
+  protected get image() {
     //https://res.cloudinary.com/do7fhccn2/image/upload/v1673957583/epicure2/Epicure_2023-01-16_11_23/chefs/untitled-1_3x_1_lyvriu.png
-    return this.getField("image");
+    return this._getField("image");
   }
-  get stars() {
-    return this.getField("stars");
+  protected get stars() {
+    return this._getField("stars");
   }
 
-  onSubmit() {
-    console.log(this.form.value);
+  protected onSubmit() {
     const {value} = this.form;
-   
-   
     if (this.isUpdate) {
       this.restaurantService.update(value, "restaurant").subscribe();
     } else {
@@ -97,11 +101,11 @@ export class RestaurantFormComponent  implements OnInit {
     this.isSubmitted = true;
   }
 
-  onCloseClick() {
+  protected onCloseClick() {
     this.close.emit();
   }
 
-  private getField(field: string) {
+  private _getField(field: string) {
     return this.form.get(field);
   }
 }

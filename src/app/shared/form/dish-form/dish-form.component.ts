@@ -1,4 +1,11 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import Dish from "src/app/models/Dish";
@@ -11,14 +18,17 @@ import { ApiService } from "src/app/services/apiService/api.service";
   styleUrls: ["./dish-form.component.scss"],
 })
 export class DishFormComponent implements OnInit {
-  isSubmitted = false;
-  isUpdate = false;
-  dishToUpdate: Dish;
-  form: FormGroup;
-  ingredientsArray: string[] = [];
+
+  private _dishToUpdate: Dish;
+  private _isUpdate = false;
+
+  protected isSubmitted = false;
+  protected form: FormGroup;
+  protected ingredientsArray: string[] = [];
+  protected restaurants: { key: string; value: string }[] = [];
+
   @Output() close = new EventEmitter();
-  @ViewChild('input')input:ElementRef;
-  restaurants: { key: string; value: string }[] = [];
+  @ViewChild("input") input: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -28,82 +38,45 @@ export class DishFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.restaurantService.readAll("restaurant").subscribe((data) => {
-      data.forEach((r) => {
-        this.restaurants.push({ key: r._id, value: r.name });
-      });
-    });
-
+    this._initRestaurants();
     this._createForm();
-    this.route.params.subscribe((params) => {
-      const id = params["id"];
-      if (id) {
-        this.dishService.readOne(id, "dish").subscribe((dish) => {
-      this.ingredientsArray = dish?.ingredients;
-
-          this.isUpdate = true;
-          this.dishToUpdate = dish;
-          this._createForm();
-        });
-      }
-    });
+    this._checkIfUpdate();
   }
 
- 
-
-  private _createForm() {
-    this.form = this.fb.group({
-      _id: this.dishToUpdate?._id,
-      name: [this.dishToUpdate?.name, Validators.required],
-      image: [this.dishToUpdate?.image, Validators.required],
-      price: [
-        this.dishToUpdate?.price,
-        [Validators.required, Validators.min(1)],
-      ],
-      ingredients: [this.dishToUpdate?.ingredients || []],
-      spicy: [this.dishToUpdate?.tags?.includes("spicy") || false],
-      vegan: [this.dishToUpdate?.tags?.includes("vegan") || false],
-      vegetarian: [this.dishToUpdate?.tags?.includes("vegetarian") || false],
-      restaurant: [this.dishToUpdate?.restaurant, Validators.required],
-    });
+  protected get buttonSubmit() {
+    return this._isUpdate ? "Update" : "Create";
   }
 
-  get buttonSubmit() {
-    return this.isUpdate ? "Update" : "Create";
-  }
-
-  get name() {
+  protected get name() {
     return this._getField("name");
   }
-  get restaurant() {
+  protected get restaurant() {
     return this._getField("restaurant");
   }
 
-  get image() {
-    //https://res.cloudinary.com/do7fhccn2/image/upload/v1673957583/epicure2/Epicure_2023-01-16_11_23/chefs/untitled-1_3x_1_lyvriu.png
+  protected get image() {
     return this._getField("image");
   }
-  get price() {
+  protected get price() {
     return this._getField("price");
   }
 
-  onIngredientAdd() {
+   protected onIngredientAdd() {
     this.ingredientsArray.push(this.input.nativeElement.value);
     this.input.nativeElement.value = "";
     console.log(this.ingredientsArray);
   }
 
-  onSubmit() {
-    console.log(this.form.value);
-    const {value} = this.form;
+  protected onSubmit() {
+    const { value } = this.form;
     value.ingredients = this.ingredientsArray;
-   const tags = [];
-   if(value.spicy) tags.push("spicy");
-   if(value.vegan) tags.push("vegan");
-   if(value.vegetarian) tags.push("vegetarian");
-   value.tags = tags;
-   
-    if (this.isUpdate) {
+    const tags = [];
+    if (value.spicy) tags.push("spicy");
+    if (value.vegan) tags.push("vegan");
+    if (value.vegetarian) tags.push("vegetarian");
+    value.tags = tags;
+
+    if (this._isUpdate) {
       this.dishService.update(value, "dish").subscribe();
     } else {
       this.dishService.create(value, "dish").subscribe({
@@ -114,15 +87,58 @@ export class DishFormComponent implements OnInit {
     this.isSubmitted = true;
   }
 
-  onCloseClick() {
+  protected onCloseClick() {
     this.close.emit();
   }
- 
-  onDeleteIngredientClicked(ingredient:any){
-    this.ingredientsArray = this.ingredientsArray.filter(str => str !== ingredient);
+
+  protected onDeleteIngredientClicked(ingredient: any) {
+    this.ingredientsArray = this.ingredientsArray.filter(
+      (str) => str !== ingredient
+    );
   }
 
   private _getField(field: string) {
     return this.form.get(field);
+  }
+
+
+  private _checkIfUpdate() {
+    this.route.params.subscribe((params) => {
+      const id = params["id"];
+      if (id) {
+        this.dishService.readOne(id, "dish").subscribe((dish) => {
+          this.ingredientsArray = dish?.ingredients;
+
+          this._isUpdate = true;
+          this._dishToUpdate = dish;
+          this._createForm();
+        });
+      }
+    });
+  }
+
+  private _initRestaurants() {
+    this.restaurantService.readAll("restaurant").subscribe((data) => {
+      data.forEach((r) => {
+        this.restaurants.push({ key: r._id, value: r.name });
+      });
+    });
+  }
+
+  private _createForm() {
+    this.form = this.fb.group({
+      _id: this._dishToUpdate?._id,
+      name: [this._dishToUpdate?.name, Validators.required],
+      image: [this._dishToUpdate?.image, Validators.required],
+      price: [
+        this._dishToUpdate?.price,
+        [Validators.required, Validators.min(1)],
+      ],
+      ingredients: [this._dishToUpdate?.ingredients || []],
+      spicy: [this._dishToUpdate?.tags?.includes("spicy") || false],
+      vegan: [this._dishToUpdate?.tags?.includes("vegan") || false],
+      vegetarian: [this._dishToUpdate?.tags?.includes("vegetarian") || false],
+      restaurant: [this._dishToUpdate?.restaurant, Validators.required],
+    });
   }
 }

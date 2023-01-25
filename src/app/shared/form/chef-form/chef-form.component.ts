@@ -10,12 +10,14 @@ import { ApiService } from "src/app/services/apiService/api.service";
   styleUrls: ["./chef-form.component.scss"],
 })
 export class ChefFormComponent implements OnInit {
-  form: FormGroup;
   @Output() close = new EventEmitter();
+  
+  protected form: FormGroup;
+  protected isSubmitted = false;
 
-  chefToUpdate: Chef;
-  isUpdate = false;
-  isSubmitted = false;
+  private chefToUpdate: Chef;
+  private isUpdate = false;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -24,6 +26,47 @@ export class ChefFormComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm();
+   this._checkIfUpdate();
+  }
+
+  protected get buttonSubmit() {
+    return this.isUpdate ? "Update" : "Create";
+  }
+
+  protected get name() {
+    return this._getStringField("name");
+  }
+
+  protected get image() {
+    return this._getStringField("image");
+  }
+
+  protected get description() {
+    return this._getStringField("description");
+  }
+
+  protected onSubmit() {
+    
+    if (this.isUpdate) {
+      this.apiService.update(this.form.value, "chef").subscribe();
+    } else {
+      this.apiService.create(this.form.value, "chef").subscribe({
+        next: (res) => console.log(res),
+        error: (err) => console.log(err),
+      });
+    }
+    this.isSubmitted = true;
+  }
+
+  protected onCloseClick() {
+    this.close.emit();
+  }
+
+  private _getStringField(field: string) {
+    return this.form.get(field);
+  }
+
+  private _checkIfUpdate(){
     this.route.params.subscribe((params) => {
       const id = params["id"];
       if (id) {
@@ -43,43 +86,5 @@ export class ChefFormComponent implements OnInit {
       image: [this.chefToUpdate?.image, Validators.required],
       description: [this.chefToUpdate?.description, Validators.required],
     });
-  }
-
-  get buttonSubmit() {
-    return this.isUpdate ? "Update" : "Create";
-  }
-
-  get name() {
-    return this._getStringField("name");
-  }
-
-  get image() {
-    //https://res.cloudinary.com/do7fhccn2/image/upload/v1673957583/epicure2/Epicure_2023-01-16_11_23/chefs/untitled-1_3x_1_lyvriu.png
-    return this._getStringField("image");
-  }
-
-  get description() {
-    return this._getStringField("description");
-  }
-
-  onSubmit() {
-    
-    if (this.isUpdate) {
-      this.apiService.update(this.form.value, "chef").subscribe();
-    } else {
-      this.apiService.create(this.form.value, "chef").subscribe({
-        next: (res) => console.log(res),
-        error: (err) => console.log(err),
-      });
-    }
-    this.isSubmitted = true;
-  }
-
-  onCloseClick() {
-    this.close.emit();
-  }
-
-  private _getStringField(field: string) {
-    return this.form.get(field);
   }
 }

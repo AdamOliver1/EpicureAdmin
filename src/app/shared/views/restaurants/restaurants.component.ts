@@ -5,8 +5,8 @@ import { IRestaurantRow, ITableRow, Type } from "../../common/table/tableRow";
 import { Observable } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Chef } from "src/app/models/Chef";
-import { AdminService } from "src/app/services/adminService/admin.service";
-import { Admin } from "src/app/models/Admin";
+import { RoleService } from "src/app/services/roleService/role.service";
+import { Role } from "src/app/models/role";
 
 @Component({
   selector: "app-restaurants",
@@ -14,66 +14,51 @@ import { Admin } from "src/app/models/Admin";
   styleUrls: ["./restaurants.component.scss"],
 })
 export class RestaurantsComponent implements OnInit {
-  headers = ["name", "image", "chef", "stars"];
   @Output() dataSource: IRestaurantRow[] = [];
-  showForm = false;
-  restaurantToUpdate: Restaurant;
-  chefs: Chef[] = [];
-  isCRUDAdmin = false;
+  protected headers = ["name", "image", "chef", "stars"];
+  protected showForm = false;
+  protected restaurantToUpdate: Restaurant;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private chefService: ApiService<Chef>,
     private restaurantService: ApiService<Restaurant>,
-    private adminService:AdminService
-
+    public roleService: RoleService
   ) {}
 
-  ngOnInit(): void {//TODO move isCRUDAdmin to admin service
-    this.adminService.admin$.subscribe(admin => {
-      this.isCRUDAdmin = admin === Admin.CRUD;
-    })
-
+  ngOnInit(): void {
+    this._initDataSource();
     this.route.params.subscribe((params) => {
-      const id = params["id"];
-      if (id) {
-        this.showForm = true;
-      }
+      if (params["id"]) this.showForm = true;
     });
-    this.chefService.readAll("chef").subscribe((data) => {
-      this.chefs = data;
-    });
-   this.initDataSource();
   }
 
-  initDataSource(){
-    this.restaurantService
-    .readAll("restaurant")
-    .subscribe((data: Restaurant[]) => {
-      this.dataSource = [];
-      data.forEach((restaurant, i) => {
-        this.dataSource.push({
-          type: Type.Restaurant,
-          id: restaurant._id,
-          position: i + 1,
-          name: restaurant.name,
-          image: restaurant.image,
-          stars: restaurant.stars,
-          chef: restaurant.chef.name,
-        });
-      });
-      console.log(this.dataSource);
-    });
-  }
-  onClickCreate() {
+ 
+  protected onClickCreate() {
     this.showForm = true;
   }
 
-
-
-  onEmitRefresh() {
+  protected onEmitRefresh() {
     this.showForm = false;
-    this.initDataSource();
+    this._initDataSource();
     this.router.navigateByUrl("/restaurant");
+  }
+  private _initDataSource() {
+    this.restaurantService
+      .readAll("restaurant")
+      .subscribe((data: Restaurant[]) => {
+        this.dataSource = [];
+        data.forEach((restaurant, i) => {
+          this.dataSource.push({
+            type: Type.Restaurant,
+            id: restaurant._id,
+            position: i + 1,
+            name: restaurant.name,
+            image: restaurant.image,
+            stars: restaurant.stars,
+            chef: restaurant.chef.name,
+          });
+        });
+      });
   }
 }

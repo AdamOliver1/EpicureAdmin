@@ -1,3 +1,3 @@
-<div class="btn-container" >
-    <button (click)="emitEvent()" [disabled]="disable"  mat-button class="btn">{{label}}</button>
+<div class="btn-container" *ngIf="roleService.role$ | async as role; ">
+    <button *ngIf="role === 'crud'" (click)="emitEvent()" [disabled]="disable" mat-button class="btn">create</button>
 </div>

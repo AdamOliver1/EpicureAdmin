@@ -3,43 +3,56 @@ import { IChefRow, Type } from "../../common/table/tableRow";
 import { Chef } from "src/app/models/Chef";
 import { ActivatedRoute, Router, TitleStrategy } from "@angular/router";
 import { ApiService } from "src/app/services/apiService/api.service";
-import { AdminService } from "src/app/services/adminService/admin.service";
-import { Admin } from "src/app/models/Admin";
+import { RoleService } from "src/app/services/roleService/role.service";
+
 @Component({
   selector: "app-chefs",
   templateUrl: "./chefs.component.html",
   styleUrls: ["./chefs.component.scss"],
 })
 export class ChefsComponent {
-  headers = ["position", "name", "image", "description"];
   @Output() dataSource: IChefRow[] = [];
-  showFormChefOfTheWeek: boolean;
-  showForm: boolean;
-  chefToUpdate: Chef;
-isCRUDAdmin = false;
+
+ protected headers = ["position", "name", "image", "description"];
+
+ protected showFormChefOfTheWeek: boolean;
+ protected showForm: boolean;
+ protected chefToUpdate: Chef;
 
   constructor(
     private route: ActivatedRoute,
     private chefService: ApiService<Chef>,
     private router: Router,
-    public adminService:AdminService
+    public roleService: RoleService
   ) {}
 
   ngOnInit(): void {
-    this.adminService.admin$.subscribe(admin => {
-      this.isCRUDAdmin = admin === Admin.CRUD;
-    })
+    this._createDataSource();
+   this._checkIfUpdate();
+  }
+
+  private _checkIfUpdate(){
     this.route.params.subscribe((params) => {
-      const id = params["id"];
-      if (id) {
-        this.showForm = true;
-      }
-      this.createDataSource();
+      if (params["id"]) this.showForm = true;
     });
   }
 
+  protected onEmitRefresh() {
+    this._createDataSource();
+    this.showForm = false;
+    this.showFormChefOfTheWeek = false;
+    this.router.navigate(["chef"]);
+  }
 
-  createDataSource() {
+  protected onClickCreate() {
+    this.showForm = true;
+  }
+
+  protected onClickChefOfTheWeek() {
+    this.showFormChefOfTheWeek = true;
+  }
+
+  private _createDataSource() {
     this.chefService.readAll("chef").subscribe((data: Chef[]) => {
       this.dataSource = [];
       data.forEach((chef, i) => {
@@ -53,19 +66,5 @@ isCRUDAdmin = false;
         });
       });
     });
-  }
-  onEmitRefresh() {
-    this.createDataSource();
-    this.showForm = false;
-    this.showFormChefOfTheWeek = false;
-    this.router.navigate(['chef'])
-  }
-
-  onClickCreate() {
-    this.showForm = true;
-  }
-
-  onClickChefOfTheWeek() {
-    this.showFormChefOfTheWeek = true;
   }
 }

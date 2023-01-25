@@ -11,15 +11,13 @@ import {
 import { Router } from "@angular/router";
 import { ApiService } from "src/app/services/apiService/api.service";
 import IModel from "src/app/models/IModel";
-import { AdminService } from "src/app/services/adminService/admin.service";
-import { Admin } from "src/app/models/Admin";
+import { RoleService } from "src/app/services/roleService/role.service";
 
 @Component({
   selector: "app-table",
   templateUrl: "./table.component.html",
   styleUrls: ["./table.component.scss"],
 })
-
 export class TableComponent implements OnInit, OnChanges {
   @Input() dataSource: any[];
   @Input() headers: string[];
@@ -31,13 +29,12 @@ export class TableComponent implements OnInit, OnChanges {
   vegetarianUrl = "../../../../assets/dishesIcons/vegetarian.svg";
   selectedOption: string;
   url: string | undefined;
-  isCRUDAdmin = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService<IModel>,
-    public adminService:AdminService
+    public roleService: RoleService
   ) {}
 
   ngOnInit(): void {

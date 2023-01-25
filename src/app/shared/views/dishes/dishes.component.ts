@@ -4,8 +4,8 @@ import Dish from "src/app/models/Dish";
 import { IDishRow, Type } from "../../common/table/tableRow";
 import Restaurant from "src/app/models/Restaurant";
 import { ActivatedRoute, Router } from "@angular/router";
-import { AdminService } from "src/app/services/adminService/admin.service";
-import { Admin } from "src/app/models/Admin";
+import { RoleService } from "src/app/services/roleService/role.service";
+import { Role } from "src/app/models/role";
 
 @Component({
   selector: "app-dishes",
@@ -13,52 +13,33 @@ import { Admin } from "src/app/models/Admin";
   styleUrls: ["./dishes.component.scss"],
 })
 export class DishesComponent implements OnInit {
-  headers = ["name", "image", "restaurant", "tags", "ingredients", "price"];
-
   @Output() dataSource: IDishRow[] = [];
-  showForm = false;
-  allRestaurants: Restaurant[];
-  dishToUpdate: Dish;
-  isCRUDAdmin = false;
+  protected headers = ["name", "image", "restaurant", "tags", "ingredients", "price"];
+
+  protected showForm = false;
+  protected dishToUpdate: Dish;
+
   constructor(
-    private restaurantService: ApiService<Restaurant>,
     private dishService: ApiService<Dish>,
     private router: Router,
-    private route: ActivatedRoute,
-    private adminService:AdminService
-  ) {
-    this.restaurantService.readAll("dish").subscribe((data) => {
-      this.allRestaurants = data;
-    });
-  }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.adminService.admin$.subscribe(admin => {
-      this.isCRUDAdmin = admin === Admin.CRUD;
-    })
-
-    this.route.params.subscribe((params) => {
-      const id = params["id"];
-      if (id) {
-        this.showForm = true;
-      }
-      this.createDataSource();
-    });
-
-    
+    this.createDataSource();
+   this._checkIfUpdate();
   }
-
-
-  onClickCreate() {
+  
+  protected onClickCreate() {
     this.showForm = true;
   }
-
-  onEmitRefresh() {
+  
+  protected onEmitRefresh() {
     this.createDataSource();
-     this.showForm = false;
-    this.router.navigate(['dish']);
+    this.showForm = false;
+    this.router.navigate(["dish"]);
   }
-
+  
   private createDataSource() {
     this.dishService.readAll("dish").subscribe((data: Dish[]) => {
       this.dataSource = [];
@@ -77,4 +58,12 @@ export class DishesComponent implements OnInit {
       });
     });
   }
+
+  private _checkIfUpdate(){
+    this.route.params.subscribe((params) => {
+      if (params["id"]) this.showForm = true;
+    });
+  }
+
+ 
 }

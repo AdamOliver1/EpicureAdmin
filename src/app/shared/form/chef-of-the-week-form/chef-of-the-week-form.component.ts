@@ -10,13 +10,11 @@ import { ApiService } from "src/app/services/apiService/api.service";
   styleUrls: ["./chef-of-the-week-form.component.scss"],
 })
 export class ChefOfTheWeekFormComponent implements OnInit {
-  isSubmitted = false;
-  isUpdate = false;
-  form: FormGroup;
-
   @Output() close = new EventEmitter();
-  chefs: { key: string; value: string }[] = [];
-  newChef: Chef;
+   protected isSubmitted = false;
+   protected form: FormGroup;
+   
+   protected chefs: { key: string; value: string }[] = [];
 
   constructor(private fb: FormBuilder, private chefService: ApiService<Chef>) {}
 
@@ -26,20 +24,12 @@ export class ChefOfTheWeekFormComponent implements OnInit {
     this._createForm();
   }
 
-  private _initChefs(){
-    this.chefService.readAll("chef").subscribe((data) => {
-      data.forEach((c) => {
-        this.chefs.push({ key: c._id, value: c.name });
-      });
-    });
-  }
-
-  onSubmit() {
+  protected onSubmit() {
     this.isSubmitted = true;
     this.chefService.update({_id:this.form.value.chef} as Chef,`chef/chefweek`).subscribe();
   }
 
-  getChefOfTheWeek() {
+  protected getChefOfTheWeek() {
     this.chefService.get("chef/chefweek").subscribe({
       next: (chef) => {
         this.form.controls["chef"].setValue(chef._id)
@@ -48,18 +38,24 @@ export class ChefOfTheWeekFormComponent implements OnInit {
     });
   }
 
-  onCloseClick() {
+  protected onCloseClick() {
     this.close.emit();
-   
   }
 
-  get chef() {
+  protected get chef() {
     return this.form.get("chef");
   }
 
   private _createForm() {
     this.form = this.fb.group({
       chef: [{} as Chef,Validators.required],
+    });
+  }
+  private _initChefs(){
+    this.chefService.readAll("chef").subscribe((data) => {
+      data.forEach((c) => {
+        this.chefs.push({ key: c._id, value: c.name });
+      });
     });
   }
 }

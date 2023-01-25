@@ -52,9 +52,8 @@
 
             <ng-container *ngIf="header === 'operations'">
                 <div class="icons-container">
-                    <div *ngIf="adminService.admin$ | async as admin; ">
-
-                        <mat-icon *ngIf="admin === 'operator'" (click)="onDeleteClick(element)">
+                    <div *ngIf="roleService.role$ | async as role; ">
+                        <mat-icon *ngIf="role === 'crud'" (click)="onDeleteClick(element)">
                             delete_outline
                         </mat-icon>
                     </div>

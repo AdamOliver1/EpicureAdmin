@@ -1,6 +1,6 @@
 <div class="btns">
-    <app-button label="Create" *ngIf="isCRUDAdmin" (buttonClick)="onClickCreate()"></app-button>
-    <app-button label="Update Chef Of The Week" (buttonClick)="onClickChefOfTheWeek()"></app-button>
+    <app-button-create (buttonClick)="onClickCreate()"></app-button-create>
+<button class="btn" mat-button (click)="onClickChefOfTheWeek()">Update Chef Of The Week</button>
 </div>
 <app-table (deleteEmitter)="onEmitRefresh()" [dataSource]="dataSource" [headers]="headers"></app-table>
 <app-chef-form (close)="onEmitRefresh()" (chef)="chefToUpdate" *ngIf="showForm"></app-chef-form>

@@ -1,6 +1,6 @@
 <div class="dish-container">
 
-    <app-button *ngIf="isCRUDAdmin" label="Create" (buttonClick)="onClickCreate()"></app-button>
+    <app-button-create (buttonClick)="onClickCreate()"></app-button-create>
     <app-table (deleteEmitter)="onEmitRefresh()" [dataSource]="dataSource" [headers]="headers"></app-table>
     <app-dish-form (close)="onEmitRefresh()" (dish)="dishToUpdate" *ngIf="showForm"></app-dish-form>
 </div>
