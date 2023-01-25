@@ -23,20 +23,20 @@ export class ChefFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
+    this._createForm();
     this.route.params.subscribe((params) => {
       const id = params["id"];
       if (id) {
         this.apiService.readOne(id, "chef").subscribe((chef) => {
           this.isUpdate = true;
           this.chefToUpdate = chef;
-          this.createForm();
+          this._createForm();
         });
       }
     });
   }
 
-  private createForm() {
+  private _createForm() {
     this.form = this.fb.group({
       _id: this.chefToUpdate?._id,
       name: [this.chefToUpdate?.name, Validators.required],
@@ -50,19 +50,20 @@ export class ChefFormComponent implements OnInit {
   }
 
   get name() {
-    return this.getStringField("name");
+    return this._getStringField("name");
   }
 
   get image() {
     //https://res.cloudinary.com/do7fhccn2/image/upload/v1673957583/epicure2/Epicure_2023-01-16_11_23/chefs/untitled-1_3x_1_lyvriu.png
-    return this.getStringField("image");
+    return this._getStringField("image");
   }
 
   get description() {
-    return this.getStringField("description");
+    return this._getStringField("description");
   }
 
   onSubmit() {
+    
     if (this.isUpdate) {
       this.apiService.update(this.form.value, "chef").subscribe();
     } else {
@@ -78,7 +79,7 @@ export class ChefFormComponent implements OnInit {
     this.close.emit();
   }
 
-  private getStringField(field: string) {
+  private _getStringField(field: string) {
     return this.form.get(field);
   }
 }

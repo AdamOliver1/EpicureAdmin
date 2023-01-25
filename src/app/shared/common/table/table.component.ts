@@ -11,11 +11,15 @@ import {
 import { Router } from "@angular/router";
 import { ApiService } from "src/app/services/apiService/api.service";
 import IModel from "src/app/models/IModel";
+import { AdminService } from "src/app/services/adminService/admin.service";
+import { Admin } from "src/app/models/Admin";
+
 @Component({
   selector: "app-table",
   templateUrl: "./table.component.html",
   styleUrls: ["./table.component.scss"],
 })
+
 export class TableComponent implements OnInit, OnChanges {
   @Input() dataSource: any[];
   @Input() headers: string[];
@@ -27,20 +31,17 @@ export class TableComponent implements OnInit, OnChanges {
   vegetarianUrl = "../../../../assets/dishesIcons/vegetarian.svg";
   selectedOption: string;
   url: string | undefined;
+  isCRUDAdmin = false;
+
   constructor(
-    // private chefFormService: ChefFormService,
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService<IModel>
+    private apiService: ApiService<IModel>,
+    public adminService:AdminService
   ) {}
 
   ngOnInit(): void {
-    console.log(this.route.snapshot.routeConfig?.path);
     this.url = this.route.snapshot.routeConfig?.path;
-    //  this.route. .params.subscribe(params => {
-    //   console.log(params);
-
-    //  })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -61,7 +62,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   onDeleteClick(element: any) {
-    this.deleteEmitter.emit();
     this.deleteEmitter.emit();
     if (this.url !== undefined) {
       this.apiService.delete(element.id, this.url).subscribe();

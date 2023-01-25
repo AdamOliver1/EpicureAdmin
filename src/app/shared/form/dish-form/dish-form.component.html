@@ -30,12 +30,21 @@
         <div class="ingredients-container">
 
             <input *ngIf="!isSubmitted" #input matInput class="newIngredient" placeholder="new ingredient">
-            <button *ngIf="!isSubmitted" (click)="onIngredientAdd()" class="button" mat-raised-button type="button">Add</button>
+            <button *ngIf="!isSubmitted" (click)="onIngredientAdd()" class="button" mat-raised-button
+                type="button">Add</button>
             <mat-form-field *ngIf="!isSubmitted">
                 <mat-label>ingredients</mat-label>
-                <mat-select>
-                    <mat-option *ngFor="let ingredient of ingredientsArray" [value]="ingredient">
-                        {{ingredient}}
+                <mat-select >
+                    <mat-option *ngFor="let ingredient of ingredientsArray" >
+                        <div class="options">
+                          
+                            <button (click)="onDeleteIngredientClicked(ingredient)" mat-icon-button>
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            <div>
+                                {{ingredient}}
+                            </div>
+                        </div>
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -44,11 +53,11 @@
         <mat-form-field *ngIf="!isSubmitted">
             <mat-label>Restaurant</mat-label>
             <mat-select formControlName="restaurant">
-              <mat-option *ngFor="let restaurant of restaurants" [value]="restaurant.key">
-                {{restaurant.value}}
-              </mat-option>
+                <mat-option *ngFor="let restaurant of restaurants" [value]="restaurant.key">
+                    {{restaurant.value}}
+                </mat-option>
             </mat-select>
-          </mat-form-field>
+        </mat-form-field>
 
         <div *ngIf="!isSubmitted" class="tags-container">
 

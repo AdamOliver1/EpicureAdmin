@@ -8,7 +8,7 @@ import { LoginService } from "src/app/services/loginService/login.service";
 export class AuthGuard implements CanActivate {
   constructor(private loginService: LoginService, private router: Router) {}
 
-  canActivate() {
+  canActivate() {//TODO if logged in send to home page 
     if (this.loginService.checkedLogin()) {
       return true;
     }

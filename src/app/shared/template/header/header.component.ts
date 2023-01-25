@@ -26,6 +26,7 @@ export class HeaderComponent {
 
   signOutClick(){
 this.loginService.logout();
+// this.loginService.LoginEmitter.next(false);
 this.router.navigate(['login'])
   }
 }

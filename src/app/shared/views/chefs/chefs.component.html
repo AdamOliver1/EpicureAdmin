@@ -1,4 +1,7 @@
-<app-button label="Create" (buttonClick)="onClick()"></app-button>
+<div class="btns">
+    <app-button label="Create" *ngIf="isCRUDAdmin" (buttonClick)="onClickCreate()"></app-button>
+    <app-button label="Update Chef Of The Week" (buttonClick)="onClickChefOfTheWeek()"></app-button>
+</div>
 <app-table (deleteEmitter)="onEmitRefresh()" [dataSource]="dataSource" [headers]="headers"></app-table>
-<!-- <app-form (close)="closeCard()" *ngIf="showForm" [fields]="formFields | async"></app-form> -->
-<app-chef-form (close)="onEmitRefresh()" (chef)="chefToUpdate"   *ngIf="showForm"></app-chef-form>
+<app-chef-form (close)="onEmitRefresh()" (chef)="chefToUpdate" *ngIf="showForm"></app-chef-form>
+<app-chef-of-the-week-form *ngIf="showFormChefOfTheWeek" (close)="onEmitRefresh()"></app-chef-of-the-week-form>

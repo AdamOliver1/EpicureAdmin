@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from "@angular/core";
 
 @Component({
-  selector: 'app-button',
-  templateUrl: './create-button.component.html',
-  styleUrls: ['./create-button.component.scss']
+  selector: "app-button",
+  templateUrl: "./create-button.component.html",
+  styleUrls: ["./create-button.component.scss"],
 })
-export class CreateButtonComponent {
+export class ButtonComponent {
   @Output() buttonClick = new EventEmitter();
-  @Input() label:string;
-  @Input() disable:any;
+  @Input() label: string;
+  @Input() disable: any;
 
   emitEvent() {
-    this.buttonClick.emit(); 
+    this.buttonClick.emit();
   }
 }

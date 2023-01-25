@@ -1,8 +1,10 @@
 import { Component, Output } from "@angular/core";
 import { IChefRow, Type } from "../../common/table/tableRow";
 import { Chef } from "src/app/models/Chef";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, TitleStrategy } from "@angular/router";
 import { ApiService } from "src/app/services/apiService/api.service";
+import { AdminService } from "src/app/services/adminService/admin.service";
+import { Admin } from "src/app/models/Admin";
 @Component({
   selector: "app-chefs",
   templateUrl: "./chefs.component.html",
@@ -11,16 +13,22 @@ import { ApiService } from "src/app/services/apiService/api.service";
 export class ChefsComponent {
   headers = ["position", "name", "image", "description"];
   @Output() dataSource: IChefRow[] = [];
-
+  showFormChefOfTheWeek: boolean;
   showForm: boolean;
   chefToUpdate: Chef;
+isCRUDAdmin = false;
 
   constructor(
     private route: ActivatedRoute,
-    private chefService: ApiService<Chef>
+    private chefService: ApiService<Chef>,
+    private router: Router,
+    public adminService:AdminService
   ) {}
 
   ngOnInit(): void {
+    this.adminService.admin$.subscribe(admin => {
+      this.isCRUDAdmin = admin === Admin.CRUD;
+    })
     this.route.params.subscribe((params) => {
       const id = params["id"];
       if (id) {
@@ -29,6 +37,7 @@ export class ChefsComponent {
       this.createDataSource();
     });
   }
+
 
   createDataSource() {
     this.chefService.readAll("chef").subscribe((data: Chef[]) => {
@@ -48,9 +57,15 @@ export class ChefsComponent {
   onEmitRefresh() {
     this.createDataSource();
     this.showForm = false;
+    this.showFormChefOfTheWeek = false;
+    this.router.navigate(['chef'])
   }
 
-  onClick() {
+  onClickCreate() {
     this.showForm = true;
+  }
+
+  onClickChefOfTheWeek() {
+    this.showFormChefOfTheWeek = true;
   }
 }

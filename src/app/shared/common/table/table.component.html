@@ -1,4 +1,3 @@
-
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table">
 
     <!-- Table headers -->
@@ -20,9 +19,9 @@
 
             <!-- ingredients row -->
             <ng-container *ngIf="header === 'ingredients'">
-                <mat-select  [(value)]="element[header][0]" >
+                <mat-select [(value)]="element[header][0]">
                     <mat-option *ngFor="let option of element[header]" [value]="option">{{ option }}</mat-option>
-                  </mat-select>
+                </mat-select>
             </ng-container>
 
             <!-- tags row -->
@@ -46,16 +45,19 @@
             </ng-container>
 
             <!--others rows -->
-            <ng-container *ngIf="header !== 'image' && header !== 'ingredients' && header !== 'tags' && header !== 'stars' && header !== 'operations' && header !== 'restaurant'">
+            <ng-container
+                *ngIf="header !== 'image' && header !== 'ingredients' && header !== 'tags' && header !== 'stars' && header !== 'operations' && header !== 'restaurant'">
                 {{element[header]}}
             </ng-container>
 
-            <ng-container *ngIf="header === 'operations'" >
-                <div  class="icons-container">
+            <ng-container *ngIf="header === 'operations'">
+                <div class="icons-container">
+                    <div *ngIf="adminService.admin$ | async as admin; ">
 
-                    <mat-icon (click)="onDeleteClick(element)">
-                        delete_outline
-                    </mat-icon>
+                        <mat-icon *ngIf="admin === 'operator'" (click)="onDeleteClick(element)">
+                            delete_outline
+                        </mat-icon>
+                    </div>
                     <mat-icon (click)="onEditClick(element)">
                         edit
                     </mat-icon>

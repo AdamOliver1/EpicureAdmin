@@ -19,6 +19,7 @@ export class DishFormComponent implements OnInit {
   @Output() close = new EventEmitter();
   @ViewChild('input')input:ElementRef;
   restaurants: { key: string; value: string }[] = [];
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -33,7 +34,7 @@ export class DishFormComponent implements OnInit {
       });
     });
 
-    this.createForm();
+    this._createForm();
     this.route.params.subscribe((params) => {
       const id = params["id"];
       if (id) {
@@ -42,7 +43,7 @@ export class DishFormComponent implements OnInit {
 
           this.isUpdate = true;
           this.dishToUpdate = dish;
-          this.createForm();
+          this._createForm();
         });
       }
     });
@@ -50,7 +51,7 @@ export class DishFormComponent implements OnInit {
 
  
 
-  private createForm() {
+  private _createForm() {
     this.form = this.fb.group({
       _id: this.dishToUpdate?._id,
       name: [this.dishToUpdate?.name, Validators.required],
@@ -72,18 +73,18 @@ export class DishFormComponent implements OnInit {
   }
 
   get name() {
-    return this.getField("name");
+    return this._getField("name");
   }
   get restaurant() {
-    return this.getField("restaurant");
+    return this._getField("restaurant");
   }
 
   get image() {
     //https://res.cloudinary.com/do7fhccn2/image/upload/v1673957583/epicure2/Epicure_2023-01-16_11_23/chefs/untitled-1_3x_1_lyvriu.png
-    return this.getField("image");
+    return this._getField("image");
   }
   get price() {
-    return this.getField("price");
+    return this._getField("price");
   }
 
   onIngredientAdd() {
@@ -116,8 +117,12 @@ export class DishFormComponent implements OnInit {
   onCloseClick() {
     this.close.emit();
   }
+ 
+  onDeleteIngredientClicked(ingredient:any){
+    this.ingredientsArray = this.ingredientsArray.filter(str => str !== ingredient);
+  }
 
-  private getField(field: string) {
+  private _getField(field: string) {
     return this.form.get(field);
   }
 }

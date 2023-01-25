@@ -4,10 +4,11 @@ import { Observable } from 'rxjs';
 import IModel from 'src/app/models/IModel';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService <T extends IModel> {
   url:string = 'http://localhost:8000/api/v1';
+  // http = this.httpClient.
   constructor(
       private httpClient: HttpClient,
      ) {}
@@ -28,6 +29,10 @@ export class ApiService <T extends IModel> {
   
     readAll(endpoint: string): Observable<T[]> {
       return this.httpClient.get(`${this.url}/${endpoint}`) as Observable<T[]>;
+    }
+
+    get(endpoint: string): Observable<any> {
+      return this.httpClient.get(`${this.url}/${endpoint}`) as Observable<any>;
     }
 
     readOne(id: number,endpoint:string): Observable<any> {

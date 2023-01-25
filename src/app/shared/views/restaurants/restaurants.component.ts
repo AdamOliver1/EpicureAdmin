@@ -5,6 +5,8 @@ import { IRestaurantRow, ITableRow, Type } from "../../common/table/tableRow";
 import { Observable } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Chef } from "src/app/models/Chef";
+import { AdminService } from "src/app/services/adminService/admin.service";
+import { Admin } from "src/app/models/Admin";
 
 @Component({
   selector: "app-restaurants",
@@ -17,51 +19,52 @@ export class RestaurantsComponent implements OnInit {
   showForm = false;
   restaurantToUpdate: Restaurant;
   chefs: Chef[] = [];
+  isCRUDAdmin = false;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private chefService: ApiService<Chef>,
-    private restaurantService: ApiService<Restaurant>
+    private restaurantService: ApiService<Restaurant>,
+    private adminService:AdminService
+
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {//TODO move isCRUDAdmin to admin service
+    this.adminService.admin$.subscribe(admin => {
+      this.isCRUDAdmin = admin === Admin.CRUD;
+    })
+
     this.route.params.subscribe((params) => {
       const id = params["id"];
       if (id) {
         this.showForm = true;
       }
     });
-
     this.chefService.readAll("chef").subscribe((data) => {
       this.chefs = data;
     });
+   this.initDataSource();
+  }
 
+  initDataSource(){
     this.restaurantService
-      .readAll("restaurant")
-      .subscribe((data: Restaurant[]) => {
-        this.dataSource = [];
-        data.forEach((restaurant, i) => {
-          this.dataSource.push({
-            type: Type.Restaurant,
-            id: restaurant._id,
-            position: i + 1,
-            name: restaurant.name,
-            image: restaurant.image,
-            stars: restaurant.stars,
-            chef: restaurant.chef.name,
-          });
+    .readAll("restaurant")
+    .subscribe((data: Restaurant[]) => {
+      this.dataSource = [];
+      data.forEach((restaurant, i) => {
+        this.dataSource.push({
+          type: Type.Restaurant,
+          id: restaurant._id,
+          position: i + 1,
+          name: restaurant.name,
+          image: restaurant.image,
+          stars: restaurant.stars,
+          chef: restaurant.chef.name,
         });
-        console.log(this.dataSource);
       });
+      console.log(this.dataSource);
+    });
   }
-
-  onFormClose() {
-    this.router.navigateByUrl("/restaurant");
-    this.showForm = false;
-    this.ngOnInit();
-    this.ngOnInit();
-  }
-
   onClickCreate() {
     this.showForm = true;
   }
@@ -70,6 +73,7 @@ export class RestaurantsComponent implements OnInit {
 
   onEmitRefresh() {
     this.showForm = false;
-    this.ngOnInit();
+    this.initDataSource();
+    this.router.navigateByUrl("/restaurant");
   }
 }

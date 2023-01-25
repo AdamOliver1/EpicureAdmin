@@ -4,6 +4,8 @@ import Dish from "src/app/models/Dish";
 import { IDishRow, Type } from "../../common/table/tableRow";
 import Restaurant from "src/app/models/Restaurant";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AdminService } from "src/app/services/adminService/admin.service";
+import { Admin } from "src/app/models/Admin";
 
 @Component({
   selector: "app-dishes",
@@ -17,11 +19,13 @@ export class DishesComponent implements OnInit {
   showForm = false;
   allRestaurants: Restaurant[];
   dishToUpdate: Dish;
+  isCRUDAdmin = false;
   constructor(
     private restaurantService: ApiService<Restaurant>,
     private dishService: ApiService<Dish>,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private adminService:AdminService
   ) {
     this.restaurantService.readAll("dish").subscribe((data) => {
       this.allRestaurants = data;
@@ -29,6 +33,10 @@ export class DishesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.adminService.admin$.subscribe(admin => {
+      this.isCRUDAdmin = admin === Admin.CRUD;
+    })
+
     this.route.params.subscribe((params) => {
       const id = params["id"];
       if (id) {
@@ -40,10 +48,6 @@ export class DishesComponent implements OnInit {
     
   }
 
-  onFormClose() {
-    this.createDataSource();
-    this.showForm = false;
-  }
 
   onClickCreate() {
     this.showForm = true;
@@ -51,12 +55,12 @@ export class DishesComponent implements OnInit {
 
   onEmitRefresh() {
     this.createDataSource();
+     this.showForm = false;
+    this.router.navigate(['dish']);
   }
 
   private createDataSource() {
     this.dishService.readAll("dish").subscribe((data: Dish[]) => {
-      console.log("data: ", data);
-
       this.dataSource = [];
       data.forEach((dish, i) => {
         this.dataSource.push({
