@@ -1,4 +1,4 @@
-import { NgModule, Component } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HeaderComponent } from "./template/header/header.component";
 import { SideBarComponent } from "./template/side-bar/side-bar.component";
@@ -12,7 +12,7 @@ import { FooterComponent } from "./template/footer/footer.component";
 import { RestaurantsComponent } from "./views/restaurants/restaurants.component";
 import { MatTableModule } from "@angular/material/table";
 import { TableComponent } from "./common/table/table.component";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
 import { ImageCardComponent } from "./common/image-card/image-card.component";
 import { DishesComponent } from "./views/dishes/dishes.component";
 import { ChefsComponent } from "./views/chefs/chefs.component";
@@ -33,8 +33,7 @@ import { LoginComponent } from "./views/login/login.component";
 import { MatCardModule } from "@angular/material/card";
 import { MatMenuModule } from "@angular/material/menu";
 import { ChefOfTheWeekFormComponent } from './form/chef-of-the-week-form/chef-of-the-week-form.component';
-import { AuthInterceptor } from "../services/auth.interceptor";
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -57,6 +56,7 @@ import { AuthInterceptor } from "../services/auth.interceptor";
     BrowserModule,
     ReactiveFormsModule,
     MatMenuModule,
+    MatSnackBarModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatCardModule,

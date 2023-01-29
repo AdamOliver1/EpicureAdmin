@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
+import IDish from "src/app/models/Dish";
 import Dish from "src/app/models/Dish";
 import Restaurant from "src/app/models/Restaurant";
 import { ApiService } from "src/app/services/apiService/api.service";
@@ -18,7 +19,6 @@ import { ApiService } from "src/app/services/apiService/api.service";
   styleUrls: ["./dish-form.component.scss"],
 })
 export class DishFormComponent implements OnInit {
-
   private _dishToUpdate: Dish;
   private _isUpdate = false;
 
@@ -61,7 +61,7 @@ export class DishFormComponent implements OnInit {
     return this._getField("price");
   }
 
-   protected onIngredientAdd() {
+  protected onIngredientAdd() {
     this.ingredientsArray.push(this.input.nativeElement.value);
     this.input.nativeElement.value = "";
     console.log(this.ingredientsArray);
@@ -76,10 +76,20 @@ export class DishFormComponent implements OnInit {
     if (value.vegetarian) tags.push("vegetarian");
     value.tags = tags;
 
+    const dish: IDish = {
+      _id: value._id,
+      name: value.name,
+      image: value.image,
+      price: value.price,
+      ingredients: value.ingredients,
+      restaurant: value.restaurant,
+      tags: tags,
+    };
+    
     if (this._isUpdate) {
-      this.dishService.update(value, "dish").subscribe();
+      this.dishService.update(dish, "dish").subscribe();
     } else {
-      this.dishService.create(value, "dish").subscribe({
+      this.dishService.create(dish, "dish").subscribe({
         next: (res) => console.log(res),
         error: (err) => console.log(err),
       });
@@ -100,7 +110,6 @@ export class DishFormComponent implements OnInit {
   private _getField(field: string) {
     return this.form.get(field);
   }
-
 
   private _checkIfUpdate() {
     this.route.params.subscribe((params) => {
